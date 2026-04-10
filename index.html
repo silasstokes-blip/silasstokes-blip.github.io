@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silas Heaphy — Game Designer & Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESET & ROOT
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:    #111114;
+  --bg-surface: #18181c;
+  --bg-raised:  #1e1e24;
+  --teal:       #5DCAA5;
+  --teal-dim:   rgba(93,202,165,0.12);
+  --teal-mid:   rgba(93,202,165,0.25);
+  --text:       #e8e8ec;
+  --text-muted: #7a7a8a;
+  --text-faint: #3e3e4e;
+  --border:     #2a2a34;
+  --font-sans:  'DM Sans', sans-serif;
+  --font-mono:  'DM Mono', monospace;
+  --ease:       cubic-bezier(.25,.46,.45,.94);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg-deep);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+h1,h2,h3,h4 { font-weight: 500; line-height: 1.2; }
+h1 { font-size: clamp(2.4rem, 6vw, 4.8rem); letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -0.02em; }
+h3 { font-size: 1.15rem; letter-spacing: -0.01em; }
+p  { color: var(--text-muted); max-width: 64ch; }
+
+.mono { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; }
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+a { color: inherit; text-decoration: none; }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 5rem 0; }
+.section + .section { border-top: 1px solid var(--border); }
+
+/* ============================================================
+   GRID TEXTURE (game-engine-editor feel)
+   ============================================================ */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+  background: rgba(17,17,20,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+#navbar .wordmark {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+#hamburger {
+  display: flex; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; background: none; border: none;
+}
+#hamburger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--text);
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+#hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#hamburger.open span:nth-child(2) { opacity: 0; }
+#hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ============================================================
+   MENU OVERLAY
+   ============================================================ */
+#menu-overlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--bg-deep);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 4rem 2rem 2rem;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.35s var(--ease);
+}
+#menu-overlay.open { opacity: 1; pointer-events: all; }
+
+.menu-links { list-style: none; }
+.menu-links li {
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.menu-links a {
+  display: flex; align-items: baseline; gap: 1rem;
+  padding: 1.2rem 0;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  transition: color 0.2s;
+}
+.menu-links a:hover { color: var(--teal); }
+.menu-links a .menu-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+.menu-links .resume-link {
+  color: var(--teal);
+  font-size: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: none;
+}
+.menu-links .resume-link a { font-size: 1rem; letter-spacing: 0.06em; font-family: var(--font-mono); }
+
+/* ============================================================
+   PAGE SYSTEM
+   ============================================================ */
+.page { display: none; padding-top: 60px; min-height: 100vh; }
+.page.active { display: block; }
+.page-enter { animation: fadeIn 0.35s var(--ease) forwards; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+
+/* ============================================================
+   HOME PAGE
+   ============================================================ */
+#home-hero {
+  padding: 6rem 0 5rem;
+  border-bottom: 1px solid var(--border);
+}
+.bio-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+@media(max-width:640px){ .bio-grid { grid-template-columns: 1fr; } }
+
+.headshot-placeholder {
+  width: 180px; height: 180px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.headshot-placeholder::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.headshot-placeholder .hs-label {
+  position: relative; z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.bio-content .name-block { margin-bottom: 0.6rem; }
+.bio-content h1 { line-height: 1.05; }
+.bio-content .tagline {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--teal);
+  margin: 0.5rem 0 1.5rem;
+  letter-spacing: 0.05em;
+}
+.bio-content p { margin-bottom: 2rem; }
+
+.skills-list {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none;
+}
+.skills-list li {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   GAME CARDS
+   ============================================================ */
+.cards-section { padding: 5rem 0; }
+.cards-header { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 2.5rem; }
+.cards-header h2 { }
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+@media(max-width:900px){ .featured-grid { grid-template-columns: 1fr; } }
+
+.game-card {
+  background: var(--bg-surface);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease);
+  display: flex; flex-direction: column;
+}
+.game-card:hover { transform: translateY(-4px); z-index: 2; }
+.game-card:hover .card-border-accent { opacity: 1; }
+
+.card-border-accent {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--teal);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.card-thumb {
+  width: 100%; padding-bottom: 47%;
+  background: var(--bg-raised);
+  position: relative; overflow: hidden;
+  flex-shrink: 0;
+}
+.card-thumb::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.card-thumb .thumb-label {
+  position: absolute; inset: 0; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  /*color: var(--text-faint);*/
+}
+
+.card-body { padding: 1.4rem 1.6rem 1.8rem; flex: 1; }
+.card-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--teal);
+  color: var(--teal);
+}
+.tag.muted { border-color: var(--border); color: var(--text-muted); }
+
+.card-body h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+.card-body p { font-size: 0.875rem; color: var(--text-muted); max-width: 100%; line-height: 1.5; }
+
+/* Small cards grid */
+.small-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.small-grid .game-card .card-thumb { padding-bottom: 44%; }
+.small-grid .game-card .card-body { padding: 1rem 1.2rem 1.4rem; }
+.small-grid .game-card .card-body h3 { font-size: 0.95rem; }
+
+/* ============================================================
+   GAME PAGE HERO
+   ============================================================ */
+.game-hero {
+  height: 60vh; min-height: 380px;
+  position: relative; overflow: hidden;
+  display: flex; align-items: flex-end;
+}
+.game-hero-bg {
+  position: absolute; inset: 0;
+  background: var(--bg-raised);
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 48px 48px;
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+.game-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--bg-deep) 0%, transparent 60%);
+}
+.game-hero-content {
+  position: relative; z-index: 1;
+  padding: 3rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+.game-hero-content .label { margin-bottom: 0.6rem; }
+.game-hero-content h1 { margin-bottom: 1rem; }
+.hero-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+/* ============================================================
+   VIDEO EMBED
+   ============================================================ */
+.video-section { padding: 4rem 0; }
+.video-wrap {
+  position: relative; padding-bottom: 56.25%; background: var(--bg-raised);
+  border: 1px solid var(--border); overflow: hidden;
+}
+.video-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1rem;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.play-btn {
+  width: 64px; height: 64px;
+  border: 2px solid var(--teal);
+  display: flex; align-items: center; justify-content: center;
+}
+.play-btn svg { fill: var(--teal); }
+.video-placeholder p { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); max-width: 100%; text-align: center; }
+
+/* ============================================================
+   SCREENSHOT GALLERY
+   ============================================================ */
+.gallery-scroll {
+  display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.gallery-scroll::-webkit-scrollbar { height: 4px; }
+.gallery-scroll::-webkit-scrollbar-track { background: transparent; }
+.gallery-scroll::-webkit-scrollbar-thumb { background: var(--border); }
+
+.gallery-item {
+  flex-shrink: 0; width: 380px; height: 214px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery-item::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.gallery-item span {
+  font-family: var(--font-mono); font-size: 0.7rem;
+  color: var(--text-faint); z-index: 1; position: relative;
+}
+
+/* ============================================================
+   GAME PAGE SECTIONS
+   ============================================================ */
+.game-section { padding: 3.5rem 0; border-top: 1px solid var(--border); }
+.game-section-header { margin-bottom: 1.5rem; }
+.prose p { color: var(--text-muted); margin-bottom: 1rem; line-height: 1.75; }
+
+/* Expandable */
+.expand-group { display: flex; flex-direction: column; gap: 1.5px; }
+.expand-item { background: var(--bg-surface); border: 1px solid var(--border); }
+.expand-trigger {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 1.6rem;
+  background: none; border: none; color: var(--text);
+  font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; text-align: left;
+  transition: background 0.2s;
+}
+.expand-trigger:hover { background: var(--teal-dim); }
+.expand-icon {
+  width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); flex-shrink: 0;
+  transition: transform 0.3s var(--ease), background 0.2s;
+}
+.expand-item.open .expand-icon { transform: rotate(45deg); background: var(--teal); border-color: var(--teal); }
+.expand-icon svg { fill: var(--text-muted); width: 10px; height: 10px; }
+.expand-item.open .expand-icon svg { fill: var(--bg-deep); }
+
+.expand-content {
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.4s var(--ease);
+}
+.expand-content-inner { padding: 0 1.6rem 1.6rem; }
+.expand-content-inner p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.75; }
+
+.sketch-placeholder {
+  margin: 1.2rem 0;
+  height: 180px; background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.sketch-placeholder::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.sketch-placeholder span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); z-index: 1; }
+
+.pdf-link {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  padding: 0.4rem 0.9rem;
+  margin-top: 0.8rem;
+  transition: background 0.2s;
+}
+.pdf-link:hover { background: var(--teal-dim); }
+
+/* Side-by-side comparison */
+.compare-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin: 1.5rem 0;
+}
+@media(max-width:640px) { .compare-grid { grid-template-columns: 1fr; } }
+.compare-item { }
+.compare-thumb {
+  height: 180px; background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden; margin-bottom: 0.5rem;
+}
+.compare-thumb::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.compare-thumb span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); z-index: 1; position: relative; }
+.compare-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.04em; }
+
+/* Steam link */
+.steam-link {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em;
+  background: var(--teal); color: var(--bg-deep);
+  padding: 0.65rem 1.4rem;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.steam-link:hover { opacity: 0.85; }
+
+/* Scale callouts */
+.callout-row { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+.callout-box {
+  flex: 1; min-width: 120px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  padding: 1.2rem 1.4rem;
+  text-align: center;
+}
+.callout-box .num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  color: var(--teal);
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.callout-box .desc { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ============================================================
+   SMALL PROJECTS PAGE
+   ============================================================ */
+.small-proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.proj-card {
+  background: var(--bg-surface);
+  padding: 0;
+  display: flex; flex-direction: column;
+  transition: transform 0.25s var(--ease);
+}
+.proj-card:hover { transform: translateY(-3px); z-index: 2; }
+.proj-card:hover .card-border-accent { opacity: 1; }
+.proj-card .card-thumb { padding-bottom: 48%; }
+.proj-card-body { padding: 1.4rem 1.6rem 1.8rem; flex: 1; display: flex; flex-direction: column; gap: 0.8rem; }
+.proj-card-body p { font-size: 0.875rem; }
+.ext-link {
+  margin-top: auto;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em;
+  color: var(--teal); border-bottom: 1px solid var(--teal);
+  padding-bottom: 1px; align-self: flex-start;
+}
+
+/* ============================================================
+   MUSIC PAGE
+   ============================================================ */
+.audio-list { display: flex; flex-direction: column; gap: 1rem; }
+.audio-item {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  padding: 1.4rem 1.6rem;
+  display: flex; align-items: center; gap: 1.4rem;
+}
+.audio-play {
+  width: 44px; height: 44px; flex-shrink: 0;
+  border: 1px solid var(--teal);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.audio-play:hover { background: var(--teal-dim); }
+.audio-play svg { fill: var(--teal); }
+.audio-bar {
+  flex: 1; height: 3px; background: var(--border); position: relative;
+}
+.audio-bar-fill { height: 100%; background: var(--teal); width: 0%; }
+.audio-meta { flex-shrink: 0; }
+.audio-meta .dur { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+
+/* ============================================================
+   ABOUT / CONTACT
+   ============================================================ */
+.about-grid {
+  display: grid; grid-template-columns: 240px 1fr;
+  gap: 4rem; align-items: start;
+}
+@media(max-width:700px){ .about-grid { grid-template-columns: 1fr; } }
+
+.about-headshot {
+  width: 220px; height: 280px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.about-headshot::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--text-faint) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+.about-headshot span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); z-index: 1; position: relative; }
+
+.about-text h2 { margin-bottom: 1.2rem; }
+.about-text p { margin-bottom: 1rem; }
+.about-text h3 { margin: 2rem 0 0.8rem; }
+
+.contact-links { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 2rem; }
+.contact-link {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 1.2rem 1.6rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s, background 0.2s;
+}
+.contact-link:hover { border-color: var(--teal); background: var(--teal-dim); }
+.contact-link-icon {
+  font-family: var(--font-mono); font-size: 0.72rem;
+  color: var(--teal); letter-spacing: 0.08em;
+  width: 60px; flex-shrink: 0;
+}
+.contact-link-text { font-size: 0.9rem; color: var(--text-muted); }
+
+/* ============================================================
+   PAGE HEADER (non-hero pages)
+   ============================================================ */
+.page-header {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+.page-header .label { margin-bottom: 0.8rem; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 1rem;
+}
+footer .mono { color: var(--text-faint); }
+footer .ft-links { display: flex; gap: 1.5rem; }
+footer .ft-links a { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); transition: color 0.2s; }
+footer .ft-links a:hover { color: var(--teal); }
+
+/* ============================================================
+   MISC UTILS
+   ============================================================ */
+.teal { color: var(--teal); }
+.mt1 { margin-top: 1rem; }
+.mt2 { margin-top: 2rem; }
+.mb1 { margin-bottom: 1rem; }
+.mb2 { margin-bottom: 2rem; }
+
+.section-label-row {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.section-label-row .line {
+  flex: 1; height: 1px; background: var(--border);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:600px){
+  .container { padding: 0 1.2rem; }
+  .game-hero { height: 50vh; min-height: 280px; }
+  .game-hero-content h1 { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav id="navbar">
+  <a class="wordmark" onclick="nav('home')">SILAS HEAPHY</a>
+  <button id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ============================================================
+     MENU OVERLAY
+     ============================================================ -->
+<div id="menu-overlay">
+  <ul class="menu-links">
+    <li><a onclick="nav('home');closeMenu()"><span class="menu-num">00</span>Home</a></li>
+    <li><a onclick="nav('nitrojet');closeMenu()"><span class="menu-num">01</span>Nitrojet</a></li>
+    <li><a onclick="nav('safe-travels');closeMenu()"><span class="menu-num">02</span>Safe Travels</a></li>
+    <li><a onclick="nav('27photos');closeMenu()"><span class="menu-num">03</span>27 Photos</a></li>
+    <li><a onclick="nav('beach-car');closeMenu()"><span class="menu-num">04</span>Beach Car Game</a></li>
+    <li><a onclick="nav('popoff');closeMenu()"><span class="menu-num">05</span>Pop-Off!</a></li>
+    <li><a onclick="nav('small-projects');closeMenu()"><span class="menu-num">06</span>Small Projects</a></li>
+    <li><a onclick="nav('music');closeMenu()"><span class="menu-num">07</span>Music &amp; Sound</a></li>
+    <li><a onclick="nav('about');closeMenu()"><span class="menu-num">08</span>About</a></li>
+    <li><a onclick="nav('contact');closeMenu()"><span class="menu-num">09</span>Contact</a></li>
+    <li class="resume-link"><a href="#" onclick="return false;">[RESUME.PDF — PLACEHOLDER]</a></li>
+  </ul>
+</div>
+
+<!-- ============================================================
+     HOME PAGE
+     ============================================================ -->
+<div class="page active" id="page-home">
+  <section id="home-hero">
+    <div class="container">
+      <div class="bio-grid">
+        <div class="headshot-placeholder">
+          <span class="hs-label mono"><img class = "picture" src="HEADSHOT.jpg" style="width:100%;"/></span>
+        </div>
+        <div class="bio-content">
+          <div class="name-block">
+            <h1>Silas Heaphy</h1>
+          </div>
+          <p class="tagline">Game Designer &amp; Developer, Yale CS '29</p>
+          <p>I'm Silas Heaphy, a Yale game designer, developer, and CS student with nine years of development experience. I love designing novel mechanics across genres and creating one-of-a-kind experiences. I'm interested in game narrative through gameplay and unique approaches to music, systems, and storytelling.</p>
+          <h3>Skills:</h3>
+          <ul class="skills-list">
+            <li>Game Design</li>
+            <li>Systems Design</li>
+            <li>Level Design</li>
+            <li>SFX/Music Production</li>
+            <li>Unity</li>
+            <li>GameMaker</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cards-section">
+    <div class="container">
+      <div class="section-label-row">
+        <span class="label">Featured Work</span>
+        <div class="line"></div>
+      </div>
+      <div class="featured-grid">
+        <!-- Nitrojet -->
+        <div class="game-card" onclick="nav('nitrojet')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb">
+            <span class="thumb-label"><img class = "picture" src="NITROJET_THUMB.JPG" style="width:100%;"/></span>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag muted">Metroidvania</span>
+              <span class="tag muted">Sandbox</span>
+              <span class="tag muted">Solo</span>
+            </div>
+            <h3>Nitrojet</h3>
+            <p>An expansive and chaotic Metroidvania where everything is destructible. Features interconnected map progression and unique combat & movement design.</p>
+          </div>
+        </div>
+        <!-- Safe Travels -->
+        <div class="game-card" onclick="nav('safe-travels')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb">
+            <span class="thumb-label mono"><img class = "picture" src="SAFE_TRAVELS_THUMB.PNG" style="width:100%;"/></span>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag muted">Horror</span>
+              <span class="tag muted">Proc. Anim</span>
+              <span class="tag muted">Solo</span>
+            </div>
+            <h3>"Safe Travels!"</h3>
+            <p>A horror game about night driving, moth man, and growing up. Built on procedural animation, enemy AI, and a spiritual fusion between 1st person driving and FNAF security mechanics.</p>
+          </div>
+        </div>
+        <!-- 27 Photos -->
+        <div class="game-card" onclick="nav('27photos')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb">
+            <span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span>
+          </div>
+          <div class="card-body">
+            <div class="card-tags">
+              <span class="tag muted">Puzzle</span>
+              <span class="tag muted">Level Design</span>
+              <span class="tag muted">Documentation</span>
+            </div>
+            <h3>27 Photos</h3>
+            <p>A photo-taking walking simulator and puzzle game. Role as designer gave me documented experience in mechanical, level, and puzzle design alongside team coordination.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label-row">
+        <span class="label">Game Catalog</span>
+        <div class="line"></div>
+      </div>
+      <div class="small-grid">
+        <div class="game-card" onclick="nav('27photos')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Puzzle</span><span class="tag muted">Documentation</span></div>
+            <h3>27 Photos</h3>
+            <p>Designer for photo-taking puzzle narrative game, working alongside 20+ person team.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('beach-car')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="BEACH_CAR_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Text Adventure</span><span class="tag muted">Documentation</span></div>
+            <h3>Beach Car Game</h3>
+            <p>Thoroughly documented design process, road-trip text adventure about a group of SoCal surfer boys fleeing a motorgang.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('popoff')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="POP_OFF_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Rhythm</span><span class="tag muted">Turn-based Combat</span></div>
+            <h3>Pop-Off!</h3>
+            <p>Pop-star boss rush where Guitar Hero meets turn-based RPG, developed for Girly Pop Game Jam.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('build-your-own-platformer')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="BYOP_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Game Builder</span><span class="tag muted">Java</span></div>
+            <h3>Build Your Own Platformer</h3>
+            <p>Pick-up-and-play development tool that lets players build their own RPG player character and levels.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('gravitation')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="GRAVITATION_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Arcade</span><span class="tag muted">Physics</span></div>
+            <h3>Gravitation</h3>
+            <p>Newtonian arcade game about weaving through the chaos of colliding astral bodies.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('safe-travels')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="SAFE_TRAVELS_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Horror</span><span class="tag muted">Proc. Anim</span></div>
+            <h3>Safe Travels</h3>
+            <p>A horror game about night driving, moth man, and growing up.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('nitrojet')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="NITROJET_THUMB.JPG" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Metroidvania</span><span class="tag muted">Sandbox</span></div>
+            <h3>Nitrojet</h3>
+            <p>An expansive and chaotic Metroidvania where everything is destructible.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('dice-bowling')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="DICE_BOWLING_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Arcade</span></div>
+            <h3>Dice Bowling</h3>
+            <p>Arcade game where each roll of the dice (roll of yourself?) is the difference between triumpth and failure.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('its-about-slime')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="ITS_ABOUT_SLIME_THUMB.png" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Arcade</span></div>
+            <h3>It's About Slime</h3>
+            <p>A lone milkman fights off hoards of slimes. Eight character builds and local multiplayer.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('the-fog')">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="THE_FOG_THUMB.jpg" style="width:100%;"/></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Platformer</span></div>
+            <h3>The Fog</h3>
+            <p>Collect lantern in a desperate attempt to survive the fog. Explore an abandonned world in this atmospheric platformer.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="nav('small-projects')">
+          <div class="card-border-accent"></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag muted">Various</span></div>
+            <h3>Small Projects</h3>
+            <p>The games that are too small (and often too dumb) to display on this page.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <span class="mono">© 2025 Silas Heaphy</span>
+    <div class="ft-links">
+      <a href="#" onclick="nav('contact');return false;">Contact</a>
+      <a href="#">GitHub</a>
+      <a href="#">itch.io</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     NITROJET PAGE
+     ============================================================ -->
+<div class="page" id="page-nitrojet">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="NITROJET_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Nitrojet</h1>
+      <div class="hero-tags">
+        <span class="tag">Steam</span>
+        <span class="tag muted">Unity</span>
+        <span class="tag muted">Solo Development</span>
+        <span class="tag muted">Action</span>
+        <span class="tag muted">Original Soundtrack</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
+          <p>[ YouTube trailer embed — Nitrojet ]</p>
+        </div>
+      </div>
+      <div style="margin-top:1.2rem">
+        <a href="https://store.steampowered.com/app/1563210/Nitrojet/" class="steam-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.187.007l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
+          Nitrojet on Steam
+        </a>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Screenshots</span>
+      </div>
+      <div class="gallery-scroll">
+        <div class="gallery-item"><span>screenshot_01.png</span></div>
+        <div class="gallery-item"><span>screenshot_02.png</span></div>
+        <div class="gallery-item"><span>screenshot_03.png</span></div>
+        <div class="gallery-item"><span>screenshot_04.png</span></div>
+        <div class="gallery-item"><span>screenshot_05.png</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Scale</span>
+        <h2 class="mt1">A Full-Scale Solo Project</h2>
+      </div>
+      <div class="callout-row">
+        <div class="callout-box"><span class="num">12</span><span class="desc">Unique Bosses</span></div>
+        <div class="callout-box"><span class="num">6</span><span class="desc">Distinct Areas</span></div>
+        <div class="callout-box"><span class="num">40+</span><span class="desc">Soundtrack Tracks</span></div>
+        <div class="callout-box"><span class="num">18mo</span><span class="desc">Development Time</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">My Role</span>
+        <h2 class="mt1">Solo Developer</h2>
+      </div>
+      <div class="prose">
+        <p>[Placeholder] As the sole developer, I handled every aspect of Nitrojet — from core systems programming in Unity to boss AI design, level layout, UI/UX, sound design, and the full original soundtrack. This project pushed my ability to manage scope across a long development cycle while maintaining design coherence.</p>
+        <p>[Placeholder] I focused particularly on movement mechanics, ensuring the player's momentum felt satisfying at every speed. Iteration on the feel of movement drove many other design decisions downstream.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Design Process</span>
+        <h2 class="mt1">From Paper to Final</h2>
+      </div>
+      <div class="compare-grid">
+        <div class="compare-item">
+          <div class="compare-thumb"><span>paper_sketch_01.jpg</span></div>
+          <span class="compare-label">Early paper prototype</span>
+        </div>
+        <div class="compare-item">
+          <div class="compare-thumb"><span>final_screenshot_01.png</span></div>
+          <span class="compare-label">Final in-game implementation</span>
+        </div>
+      </div>
+      <div class="expand-group">
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Progression Design
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] The progression system in Nitrojet was designed around giving the player growing agency without overwhelming them. I'll describe the loop here — unlock gates, ability sequencing, and how boss placement informed pacing.</p>
+              <div class="sketch-placeholder"><span>progression_diagram.jpg</span></div>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Progression Design Doc (PDF placeholder)</a>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Movement Mechanics Analysis
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] Movement in Nitrojet is built around a boosting and airtime system. I analyzed how speed creates risk-reward loops and how the player learns to abuse the physics system intentionally. This section breaks down the values, feel iterations, and how movement informs level geometry.</p>
+              <div class="sketch-placeholder"><span>movement_analysis_sketch.jpg</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Tutorial Design
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] I designed the tutorial around implicit teaching — the first area is structured to demonstrate mechanics through geometry rather than text prompts. This section covers the philosophy and the specific rooms used to introduce each mechanic.</p>
+              <div class="sketch-placeholder"><span>tutorial_flowchart.jpg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Reflection</span>
+      </div>
+      <div class="prose">
+        <p>[Placeholder] Building Nitrojet as a solo project taught me how to ruthlessly cut scope without losing design vision. The biggest lesson was that the feel of a game emerges from hundreds of small decisions — none of which can be delegated. I'd approach boss design differently next time, focusing earlier on readable silhouettes and attack telegraphing.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span class="mono">Nitrojet — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     SAFE TRAVELS PAGE
+     ============================================================ -->
+<div class="page" id="page-safe-travels">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-safe"><img class = "picture" src="SAFE_TRAVELS_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>"Safe Travels!"</h1>
+      <div class="hero-tags">
+        <span class="tag">Godot</span>
+        <span class="tag muted">3D</span>
+        <span class="tag muted">Procedural Animation</span>
+        <span class="tag muted">Artistic</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
+          <p>[ YouTube trailer embed — Safe Travels ]</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Screenshots</span>
+      </div>
+      <div class="gallery-scroll">
+        <div class="gallery-item"><span>st_screen_01.png</span></div>
+        <div class="gallery-item"><span>st_screen_02.png</span></div>
+        <div class="gallery-item"><span>st_screen_03.png</span></div>
+        <div class="gallery-item"><span>st_screen_04.png</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Artistic Goals</span>
+        <h2 class="mt1">Early 3D Aesthetic</h2>
+      </div>
+      <div class="prose">
+        <p>[Placeholder] Safe Travels was driven by a deliberate aesthetic vision: the grainy, low-poly early-3D look of late-90s games. I wanted the world to feel slightly uncanny — friendly but geometrically wrong in subtle ways. Every model was constrained to a specific poly count and vertex-snapping rule.</p>
+        <p>[Placeholder] The procedural animation system was built from scratch in Godot using IK chains for limb placement. The goal was locomotion that felt organic but clearly mechanical — a little like a spider moving its legs independently over uneven terrain.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Unique Mechanic</span>
+        <h2 class="mt1">The Car-Look System</h2>
+      </div>
+      <div class="prose">
+        <p>[Placeholder] One of the most unusual design choices in Safe Travels is the "car-look" mechanic — the player's vehicle turns its entire body to face points of interest rather than just a camera pivot. This creates a sense of personality and attention that makes the world feel reactive. I documented the iterations that led to the final implementation.</p>
+      </div>
+      <div class="sketch-placeholder" style="margin-top:1.2rem"><span>car_look_diagram.jpg</span></div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header">
+        <span class="label">Design Process</span>
+      </div>
+      <div class="expand-group">
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Moth Enemy Planning
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] The moth enemy was planned but not fully implemented in the final build. This section covers the original design intentions — patrol behavior, attraction to light sources, and how its movement pattern was meant to complement the procedural animation of the player character. Sketches and design notes included.</p>
+              <div class="sketch-placeholder"><span>moth_enemy_concept.jpg</span></div>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Enemy Design Notes (PDF placeholder)</a>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Procedural Animation Technical Notes
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] A breakdown of the IK system: how limb targets are placed, how the body height is averaged from ground contacts, and how the system blends between idle and locomotion states. Includes annotated code snippets and diagrams.</p>
+              <div class="sketch-placeholder"><span>ik_system_diagram.jpg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Reflection</span></div>
+      <div class="prose">
+        <p>[Placeholder] Safe Travels was the first time I let aesthetic goals drive technical decisions rather than the other way around. Building the procedural animation system first — before any gameplay existed — forced me to understand what the game needed to feel like before knowing what it needed to do.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span class="mono">Safe Travels — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     27 PHOTOS PAGE
+     ============================================================ -->
+<div class="page" id="page-27photos">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg"><img class = "picture" src="27_PHOTOS_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>27 Photos</h1>
+      <div class="hero-tags">
+        <span class="tag">Puzzle</span>
+        <span class="tag muted">Team Project</span>
+        <span class="tag muted">Level Design</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
+          <p>[ YouTube trailer embed — 27 Photos ]</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Screenshots</span></div>
+      <div class="gallery-scroll">
+        <div class="gallery-item"><span>27p_screen_01.png</span></div>
+        <div class="gallery-item"><span>27p_screen_02.png</span></div>
+        <div class="gallery-item"><span>27p_screen_03.png</span></div>
+        <div class="gallery-item"><span>27p_screen_04.png</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">My Role &amp; Contributions</span><h2 class="mt1">Level Design Lead</h2></div>
+      <div class="prose">
+        <p>[Placeholder] On 27 Photos I led level design for the majority of the puzzle stages. The game is built around photographs as the primary interactive element, and I designed the spatial logic that connects visual clues to player movement.</p>
+        <p>[Placeholder] I also contributed to the design philosophy doc — defining what made a good "photo puzzle" and building a language of difficulty that could be shared with the whole team.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Design Process</span></div>
+      <div class="expand-group">
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Level Design Approach
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] Each level was designed around a single "aha" moment — a point where the player understands the relationship between a photograph and the physical space. I'll walk through three levels in detail, including early sketches and how the design evolved through playtesting.</p>
+              <div class="sketch-placeholder"><span>level_design_sketch_01.jpg</span></div>
+              <div class="sketch-placeholder"><span>level_design_sketch_02.jpg</span></div>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Level Design Document (PDF placeholder)</a>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Difficulty Curve &amp; Pacing
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] The 27-puzzle structure required careful ordering. I mapped out the conceptual complexity of each puzzle and created a pacing diagram to ensure the player was never overwhelmed or underchallenged for more than two consecutive levels.</p>
+              <div class="sketch-placeholder"><span>pacing_diagram.jpg</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Reflection</span></div>
+      <div class="prose">
+        <p>[Placeholder] Working on a team required me to communicate design intent much more explicitly than when working solo. Writing shared design documents and defining a "level language" that others could use pushed me to articulate instincts I'd previously left implicit.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span class="mono">27 Photos — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     BEACH CAR GAME PAGE
+     ============================================================ -->
+<div class="page" id="page-beach-car">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"><!--<img class = "picture" src="BEACH_CAR_OVERLAY.png" style="width:100%;"/>--></div>
+    <div class="game-hero-content">
+      <h1>Beach Car Game</h1>
+      <div class="hero-tags">
+        <span class="tag muted">Solo</span>
+        <span class="tag muted">Design-Focused</span>
+        <span class="tag muted">Unity</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
+          <p>[ YouTube embed — Beach Car Game ]</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Screenshots</span></div>
+      <div class="gallery-scroll">
+        <div class="gallery-item"><span>bcg_screen_01.png</span></div>
+        <div class="gallery-item"><span>bcg_screen_02.png</span></div>
+        <div class="gallery-item"><span>bcg_screen_03.png</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">My Role</span><h2 class="mt1">Solo Developer</h2></div>
+      <div class="prose">
+        <p>[Placeholder] Beach Car Game is a solo project with heavy emphasis on design documentation. Every mechanic has a corresponding design rationale, and the project served as a testing ground for structured design process habits I wanted to build before tackling larger projects.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Design Process</span></div>
+      <div class="expand-group">
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Level Design Sketches
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] All levels were sketched on paper before any geometry was built in Unity. The sketches defined the flow of each level — where speed is built, where it must be shed, and where the player has choices. Annotated scans are included here.</p>
+              <div class="sketch-placeholder"><span>bcg_level_sketch_01.jpg</span></div>
+              <div class="sketch-placeholder"><span>bcg_level_sketch_02.jpg</span></div>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Level Design Sketches PDF (placeholder)</a>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Paper &amp; Pencil Tutorial Design
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] Before building anything, I designed the tutorial entirely on paper. This involved writing out every mechanic the player needs to learn, ordering them by dependency, and mapping each to a specific moment in the first level. The paper system became the spec the game was built against.</p>
+              <div class="sketch-placeholder"><span>paper_tutorial_scan.jpg</span></div>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Tutorial Design Document (PDF placeholder)</a>
+            </div>
+          </div>
+        </div>
+        <div class="expand-item">
+          <button class="expand-trigger" onclick="toggleExpand(this)">
+            Core Design Document
+            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
+          </button>
+          <div class="expand-content">
+            <div class="expand-content-inner">
+              <p>[Placeholder] A full design document covers the game's core loop, intended player experience, mechanic list, art direction notes, and scope boundaries. Written before development began and updated as the project evolved.</p>
+              <a href="#" class="pdf-link" onclick="return false;">↓ Full Design Document (PDF placeholder)</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Reflection</span></div>
+      <div class="prose">
+        <p>[Placeholder] Beach Car Game was where I committed to process-first development. Writing the tutorial on paper before touching Unity forced clarity about what the game actually needed to teach — and revealed several mechanics I'd planned that were redundant or confusing.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span class="mono">Beach Car Game — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     POP-OFF! PAGE
+     ============================================================ -->
+<div class="page" id="page-popoff">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg"><img class = "picture" src="POP_OFF_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Pop-Off!</h1>
+      <div class="hero-tags">
+        <span class="tag muted">Concept</span>
+        <span class="tag muted">Genre Mashup</span>
+        <span class="tag muted">Team</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
+          <p>[ YouTube embed — Pop-Off! ]</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Screenshots</span></div>
+      <div class="gallery-scroll">
+        <div class="gallery-item"><span>po_screen_01.png</span></div>
+        <div class="gallery-item"><span>po_screen_02.png</span></div>
+        <div class="gallery-item"><span>po_screen_03.png</span></div>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Concept Origin</span><h2 class="mt1">Genre Mashup Analysis</h2></div>
+      <div class="prose">
+        <p>[Placeholder] Pop-Off! originated from a question: what happens when you apply the tension structure of a battle-royale to a casual party game? The concept emerged from analyzing what creates pressure in competitive games and how that pressure can be made legible to non-competitive players.</p>
+        <p>[Placeholder] I documented the genre analysis process — mapping the mechanics of both parent genres, identifying overlaps and conflicts, and finding the design space where a mashup could be coherent rather than chaotic.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">My Role &amp; Contributions</span></div>
+      <div class="prose">
+        <p>[Placeholder] On Pop-Off! I contributed the core concept framing and the initial design document. I also handled [placeholder role description] during development. The game was built collaboratively with a [placeholder team size] team.</p>
+      </div>
+    </div>
+
+    <div class="game-section">
+      <div class="game-section-header"><span class="label">Reflection</span></div>
+      <div class="prose">
+        <p>[Placeholder] The hardest part of Pop-Off! was keeping the genre mashup from becoming incoherent. Every mechanic had to earn its place by serving both the casual accessibility goal and the competitive tension goal simultaneously. Some mechanics we designed failed this test and were cut.</p>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <span class="mono">Pop-Off! — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     SMALL PROJECTS PAGE
+     ============================================================ -->
+<div class="page" id="page-small-projects">
+  <div class="container">
+    <div class="page-header">
+      <span class="label">06 — Collection</span>
+      <h1 class="mt1">Small Projects</h1>
+      <p class="mt1">Experiments, jam games, and demos that don't fit neatly elsewhere.</p>
+    </div>
+    <section class="section">
+      <div class="small-proj-grid">
+        <!-- It's About Slime -->
+        <div class="proj-card" style="position:relative;">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono">[ ITS_ABOUT_SLIME_THUMB.PNG ]</span></div>
+          <div class="proj-card-body">
+            <h3>It's About Slime</h3>
+            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
+            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
+          </div>
+        </div>
+        <!-- Gravitation -->
+        <div class="proj-card" style="position:relative;">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono">[ GRAVITATION_THUMB.PNG ]</span></div>
+          <div class="proj-card-body">
+            <h3>Gravitation</h3>
+            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
+            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
+          </div>
+        </div>
+        <!-- Go Kart Demo -->
+        <div class="proj-card" style="position:relative;">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono">[ GO_KART_THUMB.PNG ]</span></div>
+          <div class="proj-card-body">
+            <h3>Go Kart Demo</h3>
+            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
+            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
+          </div>
+        </div>
+        <!-- Summer '25 Game Demos -->
+        <div class="proj-card" style="position:relative;">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono">[ SUMMER25_THUMB.PNG ]</span></div>
+          <div class="proj-card-body">
+            <h3>Summer '25 Game Demos</h3>
+            <p>[Placeholder] A collection of small game demos built during summer 2025, each exploring a single mechanic or aesthetic idea. Topics include [placeholder mechanic 1], [placeholder mechanic 2], and [placeholder mechanic 3].</p>
+            <a href="#" class="ext-link" onclick="return false;">View Collection →</a>
+          </div>
+        </div>
+        <!-- Liar in Our Group -->
+        <div class="proj-card" style="position:relative;">
+          <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono">[ LIAR_THUMB.PNG ]</span></div>
+          <div class="proj-card-body">
+            <h3>Liar in Our Group</h3>
+            <p>[Placeholder] A social deduction game for [placeholder player count] players inspired by the social dynamics of online multiplayer spaces. Players must identify an asymmetric information holder through [placeholder mechanic description].</p>
+            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <span class="mono">Small Projects — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← Home</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     MUSIC & SOUND PAGE
+     ============================================================ -->
+<div class="page" id="page-music">
+  <div class="container">
+    <div class="page-header">
+      <span class="label">07 — Audio</span>
+      <h1 class="mt1">Music &amp; Sound</h1>
+      <p class="mt1">Original compositions, sound design, and audio work across projects.</p>
+    </div>
+    <section class="section">
+      <div class="game-section-header" style="border-top:none;padding-top:0;">
+        <span class="label">Role &amp; Tools</span>
+      </div>
+      <div class="prose" style="margin-bottom:3rem;">
+        <p>[Placeholder] I compose and produce all original music for my projects, primarily in [DAW placeholder]. I approach sound design as an extension of game feel — every audio event should reinforce the physical sensation the player is experiencing. My work on Nitrojet's 40-track soundtrack informed how I think about pacing and emotional arc in longer-form compositions.</p>
+        <p>[Placeholder] Tools: [DAW placeholder], FMOD for adaptive audio integration, original foley recordings, and [synthesizer/plugin placeholder].</p>
+      </div>
+
+      <span class="label" style="display:block;margin-bottom:1.2rem;">Tracks</span>
+      <div class="audio-list">
+        <div class="audio-item">
+          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+          <div style="flex:1">
+            <div style="font-size:.9rem;margin-bottom:.3rem;">Nitrojet — Main Theme</div>
+            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
+          </div>
+          <div class="audio-meta"><span class="dur">3:42</span></div>
+        </div>
+        <div class="audio-item">
+          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+          <div style="flex:1">
+            <div style="font-size:.9rem;margin-bottom:.3rem;">Nitrojet — Boss Theme 01</div>
+            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
+          </div>
+          <div class="audio-meta"><span class="dur">2:15</span></div>
+        </div>
+        <div class="audio-item">
+          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+          <div style="flex:1">
+            <div style="font-size:.9rem;margin-bottom:.3rem;">Safe Travels — Ambient Loop</div>
+            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
+          </div>
+          <div class="audio-meta"><span class="dur">4:01</span></div>
+        </div>
+        <div class="audio-item">
+          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+          <div style="flex:1">
+            <div style="font-size:.9rem;margin-bottom:.3rem;">Beach Car Game — Menu Track</div>
+            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
+          </div>
+          <div class="audio-meta"><span class="dur">1:58</span></div>
+        </div>
+        <div class="audio-item">
+          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
+          <div style="flex:1">
+            <div style="font-size:.9rem;margin-bottom:.3rem;">27 Photos — Puzzle Solved Sting</div>
+            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
+          </div>
+          <div class="audio-meta"><span class="dur">0:08</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <span class="mono">Music &amp; Sound — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('home')">← Home</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     ABOUT PAGE
+     ============================================================ -->
+<div class="page" id="page-about">
+  <div class="container">
+    <div class="page-header">
+      <span class="label">08 — About</span>
+      <h1 class="mt1">About Silas</h1>
+    </div>
+    <section class="section">
+      <div class="about-grid">
+        <div>
+          <div class="about-headshot"><span>[ PHOTO ]</span></div>
+        </div>
+        <div class="about-text">
+          <h2>Yale CS, Game Design Focus</h2>
+          <p>[Placeholder] I'm a freshman studying Computer Science at Yale University. Before Yale, I was building games independently — the kind of obsessive, years-long solo projects that teach you everything textbooks don't cover. That's where Nitrojet came from.</p>
+          <p>[Placeholder] At Yale I'm continuing to develop games while studying the theoretical foundations that explain why games feel the way they do. I'm particularly interested in the overlap between systems design and player psychology — how rule structures create emotional experiences.</p>
+          <p>[Placeholder] I work in Unity and Godot, compose all my own music, do my own sound design, and write extensive design documentation before and during every project. I believe the design process — the thinking, the iteration, the documentation — is as important as the final artifact.</p>
+
+          <h3>Game Design Philosophy</h3>
+          <p>[Placeholder] Good game design is invisible. When a player feels smart, capable, or surprised, they're feeling the design working — not seeing it. My goal in every project is to create systems that generate those moments as reliably as possible, with as little friction as possible.</p>
+          <p>[Placeholder] I'm drawn to movement as a primary mechanic. How a player moves through a space tells them what the game values. If movement feels good, everything built around it has a better chance of feeling good too.</p>
+
+          <h3>Currently Seeking</h3>
+          <p>Game design internships for summer 2025. I'm interested in roles focused on systems design, level design, or gameplay programming. Open to studios of all sizes.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <span class="mono">About — Silas Heaphy</span>
+    <div class="ft-links"><a onclick="nav('contact')">Contact →</a></div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     CONTACT PAGE
+     ============================================================ -->
+<div class="page" id="page-contact">
+  <div class="container">
+    <div class="page-header">
+      <span class="label">09 — Contact</span>
+      <h1 class="mt1">Get in Touch</h1>
+      <p class="mt1">Open to internship opportunities, collaboration, and conversation about games.</p>
+    </div>
+    <section class="section">
+      <div class="contact-links">
+        <a href="mailto:placeholder@yale.edu" class="contact-link">
+          <span class="contact-link-icon">EMAIL</span>
+          <span class="contact-link-text">placeholder@yale.edu</span>
+        </a>
+        <a href="#" class="contact-link" onclick="return false;">
+          <span class="contact-link-icon">GITHUB</span>
+          <span class="contact-link-text">github.com/placeholder</span>
+        </a>
+        <a href="#" class="contact-link" onclick="return false;">
+          <span class="contact-link-icon">ITCH.IO</span>
+          <span class="contact-link-text">placeholder.itch.io</span>
+        </a>
+        <a href="#" class="contact-link" onclick="return false;">
+          <span class="contact-link-icon">RESUME</span>
+          <span class="contact-link-text">Download PDF — placeholder</span>
+        </a>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <span class="mono">© 2025 Silas Heaphy</span>
+    <div class="ft-links">
+      <a href="#">GitHub</a>
+      <a href="#">itch.io</a>
+    </div>
+  </footer>
+</div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ---- PAGE ROUTING ----
+const PAGES = {
+  'home':           'page-home',
+  'nitrojet':       'page-nitrojet',
+  'safe-travels':   'page-safe-travels',
+  '27photos':       'page-27photos',
+  'beach-car':      'page-beach-car',
+  'popoff':         'page-popoff',
+  'small-projects': 'page-small-projects',
+  'music':          'page-music',
+  'about':          'page-about',
+  'contact':        'page-contact',
+};
+
+let currentPage = 'home';
+
+function nav(pageKey) {
+  if (!PAGES[pageKey]) return;
+  const prev = document.getElementById(PAGES[currentPage]);
+  const next = document.getElementById(PAGES[pageKey]);
+  if (prev) prev.classList.remove('active');
+  next.classList.remove('page-enter');
+  void next.offsetWidth; // reflow
+  next.classList.add('active', 'page-enter');
+  currentPage = pageKey;
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  closeMenu();
+}
+
+// ---- MENU ----
+function toggleMenu() {
+  const btn = document.getElementById('hamburger');
+  const overlay = document.getElementById('menu-overlay');
+  btn.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+function closeMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('menu-overlay').classList.remove('open');
+}
+
+// ---- EXPANDABLE SECTIONS ----
+function toggleExpand(btn) {
+  const item = btn.closest('.expand-item');
+  const content = item.querySelector('.expand-content');
+  const isOpen = item.classList.contains('open');
+  // Close all siblings
+  const siblings = item.parentElement.querySelectorAll('.expand-item');
+  siblings.forEach(sib => {
+    sib.classList.remove('open');
+    sib.querySelector('.expand-content').style.maxHeight = '0';
+  });
+  if (!isOpen) {
+    item.classList.add('open');
+    content.style.maxHeight = content.scrollHeight + 'px';
+  }
+}
+
+// ---- PARALLAX ----
+window.addEventListener('scroll', () => {
+  const bgs = document.querySelectorAll('.page.active .parallax-bg');
+  bgs.forEach(bg => {
+    const offset = window.scrollY * 0.3;
+    bg.style.transform = `translateY(${offset}px)`;
+  });
+});
+
+// ---- FAKE AUDIO PLAY ANIMATION ----
+function fakePlay(btn) {
+  const bar = btn.closest('.audio-item').querySelector('.audio-bar-fill');
+  if (bar.dataset.playing) {
+    clearInterval(bar.dataset.interval);
+    delete bar.dataset.playing;
+    delete bar.dataset.interval;
+    btn.innerHTML = '<svg width="12" height="14" viewBox="0 0 12 14" fill="#5DCAA5"><path d="M0 0L12 7L0 14V0Z"/></svg>';
+    return;
+  }
+  btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12" fill="#5DCAA5"><rect x="0" y="0" width="4" height="12"/><rect x="8" y="0" width="4" height="12"/></svg>';
+  let pct = parseFloat(bar.style.width) || 0;
+  bar.dataset.playing = 'true';
+  const iv = setInterval(() => {
+    pct += 0.3;
+    if (pct >= 100) { pct = 0; }
+    bar.style.width = pct + '%';
+  }, 50);
+  bar.dataset.interval = iv;
+}
+</script>
+</body>
+</html>
