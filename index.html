@@ -17,6 +17,7 @@
   --bg-surface: #18181c;
   --bg-raised:  #1e1e24;
   --teal:       #5DCAA5;
+  --yellow:       #ffd900;
   --teal-dim:   rgba(93,202,165,0.12);
   --teal-mid:   rgba(93,202,165,0.25);
   --text:       #e8e8ec;
@@ -165,16 +166,15 @@ a { color: inherit; text-decoration: none; }
 }
 .bio-grid {
   display: grid;
-  grid-template-columns: 200px 1fr;
+  grid-template-columns: 220px 1fr;
   gap: 3rem;
   align-items: start;
 }
-@media(max-width:640px){ .bio-grid { grid-template-columns: 1fr; } }
+@media(max-width:800px){ .bio-grid { grid-template-columns: 1fr; } }
 
 .headshot-placeholder {
-  width: 180px; height: 180px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border);
+  width: 240px; height: 240px;
+  border: 3px solid var(--border);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   position: relative;
@@ -183,10 +183,6 @@ a { color: inherit; text-decoration: none; }
 .headshot-placeholder::after {
   content: '';
   position: absolute; inset: 0;
-  background-image:
-    linear-gradient(var(--text-faint) 1px, transparent 1px),
-    linear-gradient(90deg, var(--text-faint) 1px, transparent 1px);
-  background-size: 20px 20px;
 }
 .headshot-placeholder .hs-label {
   position: relative; z-index: 1;
@@ -288,6 +284,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--teal);
 }
 .tag.muted { border-color: var(--border); color: var(--text-muted); }
+.tag.wip { border-color: var(--yellow); color: var(--yellow); }
 
 .card-body h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
 .card-body p { font-size: 0.875rem; color: var(--text-muted); max-width: 100%; line-height: 1.5; }
@@ -676,7 +673,7 @@ footer .ft-links a:hover { color: var(--teal); }
      ============================================================ -->
 <div id="menu-overlay">
   <ul class="menu-links">
-    <li><a onclick="nav('home');closeMenu()"><span class="menu-num">00</span>Home</a></li>
+    <li><a onclick="closeMenu()"><span class="menu-num">1</span>Home</a></li>
     <!-- <li><a onclick="nav('nitrojet');closeMenu()"><span class="menu-num">01</span>Nitrojet</a></li>
     <li><a onclick="nav('safe-travels');closeMenu()"><span class="menu-num">02</span>Safe Travels</a></li>
     <li><a onclick="nav('27photos');closeMenu()"><span class="menu-num">03</span>27 Photos</a></li>
@@ -684,11 +681,11 @@ footer .ft-links a:hover { color: var(--teal); }
     <li><a onclick="nav('popoff');closeMenu()"><span class="menu-num">05</span>Pop-Off!</a></li>
     <li><a onclick="nav('small-projects');closeMenu()"><span class="menu-num">06</span>Small Projects</a></li>
     <li><a onclick="nav('music');closeMenu()"><span class="menu-num">07</span>Music &amp; Sound</a></li> -->
-    <li><a onclick="nav('about');closeMenu()"><span class="menu-num">01</span>About</a></li> 
-    <li><a onclick="nav('contact');closeMenu()"><span class="menu-num">02</span>Contact</a></li>
-    <!--  <li class="resume-link"><a href="#" onclick="return false;">[RESUME.PDF — PLACEHOLDER]</a></li> -->
+    <li><a onclick="closeMenu()"><span class="menu-num">2</span>About</a></li>
+    <li><a onclick="closeMenu()"><span class="menu-num">3</span>Contact</a></li>
+    <!-- <li class="resume-link"><a href="#" onclick="return false;">[RESUME.PDF — PLACEHOLDER]</a></li> -->
   </ul>
-</div> 
+</div>
 
 <!-- ============================================================
      HOME PAGE
@@ -697,7 +694,7 @@ footer .ft-links a:hover { color: var(--teal); }
   <section id="home-hero">
     <div class="container">
       <div class="bio-grid">
-        <div class="headshot-placeholder">
+        <div class="headshot-placeholder after">
           <span class="hs-label mono"><img class = "picture" src="HEADSHOT.jpg" style="width:100%;"/></span>
         </div>
         <div class="bio-content">
@@ -768,6 +765,7 @@ footer .ft-links a:hover { color: var(--teal); }
           </div>
           <div class="card-body">
             <div class="card-tags">
+              <span class="tag wip">WIP</span>
               <span class="tag muted">Puzzle</span>
               <span class="tag muted">Level Design</span>
               <span class="tag muted">Documentation</span>
@@ -785,9 +783,18 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="small-grid">
         <div class="game-card" onclick="">
           <div class="card-border-accent"></div>
+          <div class="card-thumb"><span class="thumb-label mono"></span></div>
+          <div class="card-body">
+            <div class="card-tags"><span class="tag wip">WIP</span><span class="tag muted">Simulation</span><span class="tag muted">Survival</span></div>
+            <h3>Unnamed Ecosystem Survival Game</h3>
+            <p>A fully-simulated, finely-balanced ecosystem, at risk of collapse for the profit of a single survivalist.</p>
+          </div>
+        </div>
+        <div class="game-card" onclick="">
+          <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
-            <div class="card-tags"><span class="tag muted">Puzzle</span><span class="tag muted">Documentation</span></div>
+            <div class="card-tags"><span class="tag wip">WIP</span><span class="tag muted">Puzzle</span><span class="tag muted">Documentation</span></div>
             <h3>27 Photos</h3>
             <p>Designer for photo-taking puzzle narrative game, working alongside 20+ person team.</p>
           </div>
@@ -884,11 +891,14 @@ footer .ft-links a:hover { color: var(--teal); }
       </div>
     </div>
   </section>
-  <footer>
+  <!--<footer>
+    <span class="mono">© 2025 Silas Heaphy</span>
     <div class="ft-links">
       <a href="#" onclick="nav('contact');return false;">Contact</a>
+      <a href="#">GitHub</a>
+      <a href="#">itch.io</a>
     </div>
-  </footer>
+  </footer> -->
 </div>
 
 <!-- ============================================================
