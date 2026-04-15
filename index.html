@@ -17,6 +17,8 @@
   --bg-surface: #18181c;
   --bg-raised:  #1e1e24;
   --teal:       #5DCAA5;
+  --nitro:       #43eb56;
+  --safe:       #dd2929;
   --yellow:       #ffd900;
   --teal-dim:   rgba(93,202,165,0.12);
   --teal-mid:   rgba(93,202,165,0.25);
@@ -37,6 +39,17 @@ body {
   font-weight: 400;
   line-height: 1.65;
   overflow-x: hidden;
+}
+
+.myText {
+            font-family: sans-serif;
+             line-height: 25px;
+        }
+.myLink {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--teal);
+  cursor: pointer;
 }
 
 /* ============================================================
@@ -125,6 +138,7 @@ a { color: inherit; text-decoration: none; }
 .menu-links li {
   border-bottom: 1px solid var(--border);
   overflow: hidden;
+  cursor: pointer;
 }
 .menu-links a {
   display: flex; align-items: baseline; gap: 1rem;
@@ -133,13 +147,18 @@ a { color: inherit; text-decoration: none; }
   font-weight: 500;
   letter-spacing: -0.02em;
   transition: color 0.2s;
+  cursor: pointer;
 }
-.menu-links a:hover { color: var(--teal); }
+.menu-links a:hover { 
+  color: var(--teal); 
+  cursor: pointer;
+}
 .menu-links a .menu-num {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--text-muted);
   letter-spacing: 0.08em;
+  cursor: pointer;
 }
 .menu-links .resume-link {
   color: var(--teal);
@@ -483,7 +502,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; gap: 0.6rem;
   font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.06em;
   background: var(--teal); color: var(--bg-deep);
-  padding: 0.65rem 1.4rem;
+  padding: 0.9rem 2.1rem;
   font-weight: 500;
   transition: opacity 0.2s;
 }
@@ -650,7 +669,7 @@ footer .ft-links a:hover { color: var(--teal); }
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media(max-width:600px){
+@media(){
   .container { padding: 0 1.2rem; }
   .game-hero { height: 50vh; min-height: 280px; }
   .game-hero-content h1 { font-size: 2rem; }
@@ -682,8 +701,8 @@ footer .ft-links a:hover { color: var(--teal); }
     <li><a onclick="nav('popoff');closeMenu()"><span class="menu-num">05</span>Pop-Off!</a></li>
     <li><a onclick="nav('small-projects');closeMenu()"><span class="menu-num">06</span>Small Projects</a></li>
     <li><a onclick="nav('music');closeMenu()"><span class="menu-num">07</span>Music &amp; Sound</a></li> -->
-    <li><a onclick="closeMenu()"><span class="menu-num">2</span>About</a></li>
-    <li><a onclick="closeMenu()"><span class="menu-num">3</span>Contact</a></li>
+    <li><a onclick="nav('about');closeMenu()"><span class="menu-num">2</span>About</a></li>
+    <li><a onclick="nav('contact');closeMenu()"><span class="menu-num">3</span>Contact</a></li>
     <!-- <li class="resume-link"><a href="#" onclick="return false;">[RESUME.PDF — PLACEHOLDER]</a></li> -->
   </ul>
 </div>
@@ -699,14 +718,11 @@ footer .ft-links a:hover { color: var(--teal); }
           <span class="hs-label mono"><img class = "picture" src="HEADSHOT.jpg" style="width:100%;"/></span>
         </div>
         <div class="bio-content">
-          <div class="warning">
-            <h4>Warning: This site is a work in process. Links may lead to nowhere or content may be missing. Thank you for your patience.</h4>
-          </div>
           <div class="name-block">
             <h1>Silas Heaphy</h1>
           </div>
           <p class="tagline">Game Designer &amp; Developer, Yale CS '29</p>
-          <p>I'm Silas Heaphy, a Yale game designer, developer, and CS student with nine years of development experience. I love designing novel mechanics across genres and creating one-of-a-kind experiences. I'm interested in game narrative through gameplay and unique approaches to music, systems, and storytelling.</p>
+          <p>Hi, I'm Silas Heaphy, a game designer, developer, and current Yale computer science student. For the last nine years, inspired by indie games I would play as a kid, I've been creating video games. I love pushing how novel approaches to gameplay and level design can shape exploration and narrative experiences and am fascinated by unique mechanics and integrations of music and storytelling. <a class = "myLink" onclick="nav('about')">More →</a></p>
           <h3>Skills:</h3>
           <ul class="skills-list">
             <li>Game Design</li>
@@ -729,8 +745,7 @@ footer .ft-links a:hover { color: var(--teal); }
       </div>
       <div class="featured-grid">
         <!-- Nitrojet -->
-        <!-- <div class="game-card" onclick="nav('nitrojet')"> -->
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('nitrojet')">
           <div class="card-border-accent"></div>
           <div class="card-thumb">
             <span class="thumb-label"><img class = "picture" src="NITROJET_THUMB.PNG" style="width:100%;"/></span>
@@ -746,7 +761,7 @@ footer .ft-links a:hover { color: var(--teal); }
           </div>
         </div>
         <!-- Safe Travels -->
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('safe-travels')">
           <div class="card-border-accent"></div>
           <div class="card-thumb">
             <span class="thumb-label mono"><img class = "picture" src="SAFE_TRAVELS_THUMB.PNG" style="width:100%;"/></span>
@@ -762,7 +777,7 @@ footer .ft-links a:hover { color: var(--teal); }
           </div>
         </div>
         <!-- 27 Photos -->
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('27-photos')">
           <div class="card-border-accent"></div>
           <div class="card-thumb">
             <span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span>
@@ -785,7 +800,7 @@ footer .ft-links a:hover { color: var(--teal); }
         <div class="line"></div>
       </div>
       <div class="small-grid">
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('critters')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"></span></div>
           <div class="card-body">
@@ -794,7 +809,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>A fully-simulated, finely-balanced ecosystem, at risk of collapse for the profit of a single survivalist.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('27-photos')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -803,7 +818,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Designer for photo-taking puzzle narrative game, working alongside 20+ person team.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('beach-car')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="BEACH_CAR_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -812,7 +827,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Thoroughly documented design process, road-trip text adventure about a group of SoCal surfer boys fleeing a motorgang.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('pop-off')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="POP_OFF_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -821,7 +836,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Pop-star boss rush where Guitar Hero meets turn-based RPG, developed for Girly Pop Game Jam.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('byop')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="BYOP_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -830,7 +845,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Pick-up-and-play development tool that lets players build their own RPG player character and levels.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('gravitation')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="GRAVITATION_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -839,7 +854,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Newtonian arcade game about weaving through the chaos of colliding astral bodies.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('safe-travels')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="SAFE_TRAVELS_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -848,7 +863,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>A horror game about night driving, moth man, and growing up.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('nitrojet')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="NITROJET_THUMB.PNG" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -857,7 +872,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>An expansive and chaotic Metroidvania where everything is destructible.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('dice-bowling')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="DICE_BOWLING_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -866,7 +881,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Arcade game where each roll of the dice (roll of yourself?) is the difference between triumpth and failure.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('its-about-slime')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="ITS_ABOUT_SLIME_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -875,7 +890,7 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>A lone milkman fights off hoards of slimes. Eight character builds and local multiplayer.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <div class="game-card" onclick="nav('the-fog')">
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="THE_FOG_THUMB.jpg" style="width:100%;"/></span></div>
           <div class="card-body">
@@ -884,14 +899,14 @@ footer .ft-links a:hover { color: var(--teal); }
             <p>Collect lantern in a desperate attempt to survive the fog. Explore an abandonned world in this atmospheric platformer.</p>
           </div>
         </div>
-        <div class="game-card" onclick="">
+        <!--<div class="game-card" onclick="">
           <div class="card-border-accent"></div>
           <div class="card-body">
             <div class="card-tags"><span class="tag muted">Various</span></div>
             <h3>Small Projects</h3>
             <p>The games that are too small (and often too dumb) to display on this page.</p>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
@@ -914,47 +929,50 @@ footer .ft-links a:hover { color: var(--teal); }
     <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
       <h1>Nitrojet</h1>
-      <div class="hero-tags">
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem">← Back</a>
+      <!--<div class="hero-tags">
         <span class="tag">Steam</span>
         <span class="tag muted">Unity</span>
         <span class="tag muted">Solo Development</span>
         <span class="tag muted">Action</span>
         <span class="tag muted">Original Soundtrack</span>
-      </div>
+      </div> -->
     </div>
   </div>
 
   <div class="container">
-    <div class="video-section">
+    <!--<div class="video-section">
       <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
       <div class="video-wrap">
         <div class="video-placeholder">
           <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
-          <p>[ YouTube trailer embed — Nitrojet ]</p>
+          <p>g</p>
         </div>
       </div>
-      <div style="margin-top:1.2rem">
-        <a href="https://store.steampowered.com/app/1563210/Nitrojet/" class="steam-link">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.187.007l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
-          Nitrojet on Steam
-        </a>
+      
+    </div> -->
+    
+
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Nitrojet is an expansive and chaotic metroidvania where everything is destructible. Struggle against hordes of airborne beasts through sprawling ruins. Overcome the odds to take your throne as the flame-borne god of destruction. </p>
+        <p>Over its three year development, Nitrojet taught me an incredible amount in design, development, publishing, and more. The game's scale (12 areas, 20+ hour gameplay, 700+ audio files, ~40k lines of code, 46 enemies, 14 bosses, etc.) called for attention to long-term player progression and difficulty, and the mechanical novelty called for unique and mindful approaches to mechanics and level design. Built off a unique and cohesive moveset, high-speed airborne combat, and a truly rare level of environmental destructibility, Nitrojet brought a number of challenges in terms of long-term project management, player-conducive level design, and large-project development. In the end, through extensive iteration and strong design, it became a truly one-of-a-kind action adventure.</p>
+      </div>
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://store.steampowered.com/app/1563210/Nitrojet/" target="_blank" class="steam-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.187.007l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
+            Nitrojet on Steam
+          </a>
+      </div>
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="Nitrojet_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Nitrojet_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Nitrojet_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Nitrojet_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
       </div>
     </div>
 
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Screenshots</span>
-      </div>
-      <div class="gallery-scroll">
-        <div class="gallery-item"><span>screenshot_01.png</span></div>
-        <div class="gallery-item"><span>screenshot_02.png</span></div>
-        <div class="gallery-item"><span>screenshot_03.png</span></div>
-        <div class="gallery-item"><span>screenshot_04.png</span></div>
-        <div class="gallery-item"><span>screenshot_05.png</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
+    <!--<div class="game-section">
       <div class="game-section-header">
         <span class="label">Scale</span>
         <h2 class="mt1">A Full-Scale Solo Project</h2>
@@ -1041,12 +1059,8 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose">
         <p>[Placeholder] Building Nitrojet as a solo project taught me how to ruthlessly cut scope without losing design vision. The biggest lesson was that the feel of a game emerges from hundreds of small decisions — none of which can be delegated. I'd approach boss design differently next time, focusing earlier on readable silhouettes and attack telegraphing.</p>
       </div>
-    </div>
+    </div>-->
   </div>
-  <footer>
-    <span class="mono">Nitrojet — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
-  </footer>
 </div>
 
 <!-- ============================================================
@@ -1054,539 +1068,356 @@ footer .ft-links a:hover { color: var(--teal); }
      ============================================================ -->
 <div class="page" id="page-safe-travels">
   <div class="game-hero">
-    <div class="game-hero-bg parallax-bg" id="bg-safe"><img class = "picture" src="SAFE_TRAVELS_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="SAFE_TRAVELS_BG.png" style="width:100%;"/></div>
     <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
       <h1>"Safe Travels!"</h1>
-      <div class="hero-tags">
-        <span class="tag">Godot</span>
-        <span class="tag muted">3D</span>
-        <span class="tag muted">Procedural Animation</span>
-        <span class="tag muted">Artistic</span>
-      </div>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
 
   <div class="container">
-    <div class="video-section">
-      <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
-      <div class="video-wrap">
-        <div class="video-placeholder">
-          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
-          <p>[ YouTube trailer embed — Safe Travels ]</p>
-        </div>
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Safe Travels is a horror driving game in which players road trip across the rural United States while surviving a stalking Moth Man. Inspired by night driving on the lonely mountain roads of rural Colorado, this game brings together procedural animation, 3D level design, enemy AI, and unique driving and camera mechanics to create a truly threatening antagonist and immersive adventure.</p>
       </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Screenshots</span>
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://www.youtube.com/watch?v=OKF_dGK8Nf8" target="_blank" class="steam-link">
+            "Safe Travels!" Demo Footage
+          </a>
       </div>
-      <div class="gallery-scroll">
-        <div class="gallery-item"><span>st_screen_01.png</span></div>
-        <div class="gallery-item"><span>st_screen_02.png</span></div>
-        <div class="gallery-item"><span>st_screen_03.png</span></div>
-        <div class="gallery-item"><span>st_screen_04.png</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Artistic Goals</span>
-        <h2 class="mt1">Early 3D Aesthetic</h2>
-      </div>
-      <div class="prose">
-        <p>[Placeholder] Safe Travels was driven by a deliberate aesthetic vision: the grainy, low-poly early-3D look of late-90s games. I wanted the world to feel slightly uncanny — friendly but geometrically wrong in subtle ways. Every model was constrained to a specific poly count and vertex-snapping rule.</p>
-        <p>[Placeholder] The procedural animation system was built from scratch in Godot using IK chains for limb placement. The goal was locomotion that felt organic but clearly mechanical — a little like a spider moving its legs independently over uneven terrain.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Unique Mechanic</span>
-        <h2 class="mt1">The Car-Look System</h2>
-      </div>
-      <div class="prose">
-        <p>[Placeholder] One of the most unusual design choices in Safe Travels is the "car-look" mechanic — the player's vehicle turns its entire body to face points of interest rather than just a camera pivot. This creates a sense of personality and attention that makes the world feel reactive. I documented the iterations that led to the final implementation.</p>
-      </div>
-      <div class="sketch-placeholder" style="margin-top:1.2rem"><span>car_look_diagram.jpg</span></div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Design Process</span>
-      </div>
-      <div class="expand-group">
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Moth Enemy Planning
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] The moth enemy was planned but not fully implemented in the final build. This section covers the original design intentions — patrol behavior, attraction to light sources, and how its movement pattern was meant to complement the procedural animation of the player character. Sketches and design notes included.</p>
-              <div class="sketch-placeholder"><span>moth_enemy_concept.jpg</span></div>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Enemy Design Notes (PDF placeholder)</a>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Procedural Animation Technical Notes
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] A breakdown of the IK system: how limb targets are placed, how the body height is averaged from ground contacts, and how the system blends between idle and locomotion states. Includes annotated code snippets and diagrams.</p>
-              <div class="sketch-placeholder"><span>ik_system_diagram.jpg</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Reflection</span></div>
-      <div class="prose">
-        <p>[Placeholder] Safe Travels was the first time I let aesthetic goals drive technical decisions rather than the other way around. Building the procedural animation system first — before any gameplay existed — forced me to understand what the game needed to feel like before knowing what it needed to do.</p>
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="Safe_Travels_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Safe_Travels_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Safe_Travels_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Safe_Travels_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
       </div>
     </div>
   </div>
-  <footer>
-    <span class="mono">Safe Travels — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
-  </footer>
 </div>
 
 <!-- ============================================================
      27 PHOTOS PAGE
      ============================================================ -->
-<div class="page" id="page-27photos">
+<div class="page" id="page-27-photos">
   <div class="game-hero">
-    <div class="game-hero-bg parallax-bg"><img class = "picture" src="27_PHOTOS_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="27_PHOTOS_BG.png" style="width:100%;"/></div>
     <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
       <h1>27 Photos</h1>
-      <div class="hero-tags">
-        <span class="tag">Puzzle</span>
-        <span class="tag muted">Team Project</span>
-        <span class="tag muted">Level Design</span>
-      </div>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
 
   <div class="container">
-    <div class="video-section">
-      <span class="label mb1" style="display:block;margin-bottom:.8rem">Trailer</span>
-      <div class="video-wrap">
-        <div class="video-placeholder">
-          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
-          <p>[ YouTube trailer embed — 27 Photos ]</p>
-        </div>
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>27 Photos follows the adventures of a young woman named Cam as she explores a tower of memories, using her camera to rediscover her past and work through the puzzles of her own story. The diverse puzzle systems and gradual approach to player information necessitated an astute eye in puzzle design and level progression.</p>
+        <p>As a game designer for the 28 person team for this game, I worked on mechanical systems with the photo mechanic and puzzles, level design for knowledge-based game progression, and UI and tutorial design to help guide player knowledge. This necessitated extensive prototyping, documentation, mockups, and communication across tools and teams, building my cooperative skills in game development, my knowledge of design tools, and my understanding of the demands of puzzle design.</p>
       </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Screenshots</span></div>
-      <div class="gallery-scroll">
-        <div class="gallery-item"><span>27p_screen_01.png</span></div>
-        <div class="gallery-item"><span>27p_screen_02.png</span></div>
-        <div class="gallery-item"><span>27p_screen_03.png</span></div>
-        <div class="gallery-item"><span>27p_screen_04.png</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">My Role &amp; Contributions</span><h2 class="mt1">Level Design Lead</h2></div>
-      <div class="prose">
-        <p>[Placeholder] On 27 Photos I led level design for the majority of the puzzle stages. The game is built around photographs as the primary interactive element, and I designed the spatial logic that connects visual clues to player movement.</p>
-        <p>[Placeholder] I also contributed to the design philosophy doc — defining what made a good "photo puzzle" and building a language of difficulty that could be shared with the whole team.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Design Process</span></div>
-      <div class="expand-group">
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Level Design Approach
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] Each level was designed around a single "aha" moment — a point where the player understands the relationship between a photograph and the physical space. I'll walk through three levels in detail, including early sketches and how the design evolved through playtesting.</p>
-              <div class="sketch-placeholder"><span>level_design_sketch_01.jpg</span></div>
-              <div class="sketch-placeholder"><span>level_design_sketch_02.jpg</span></div>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Level Design Document (PDF placeholder)</a>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Difficulty Curve &amp; Pacing
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] The 27-puzzle structure required careful ordering. I mapped out the conceptual complexity of each puzzle and created a pacing diagram to ensure the player was never overwhelmed or underchallenged for more than two consecutive levels.</p>
-              <div class="sketch-placeholder"><span>pacing_diagram.jpg</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Reflection</span></div>
-      <div class="prose">
-        <p>[Placeholder] Working on a team required me to communicate design intent much more explicitly than when working solo. Writing shared design documents and defining a "level language" that others could use pushed me to articulate instincts I'd previously left implicit.</p>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div>-->
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
       </div>
     </div>
   </div>
-  <footer>
-    <span class="mono">27 Photos — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
-  </footer>
 </div>
-
 <!-- ============================================================
-     BEACH CAR GAME PAGE
+     CRITTERS PAGE
+     ============================================================ -->
+<div class="page" id="page-critters">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Unnamed Ecosystem Survival Game</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Unnamed Ecosystem Survival Game is a survival game built off a highly systemic and highly balanced ecosystem simulation. Players must navigate survival and extractive profit off a fully dynamic and highly balanced food chain. Hunting and selling creatures is necessary for profit, but go too far and the ecosystem itself to collapse, leaving the entrepreneur to starve.</p>
+        <p>This game called for fine-tuning of systems. It brought the unique challenge of creating a system tuned to stay balanced in perpetuity on its own, but to be subject enough to instability that player actions could create a runaway impact. Design was built around pulling players in two opposite directions, one of moderation to ensure stability and the other of maximizing profit score. This created a unique player conflict which explores the challenges and complexities of real-world environmentalism.</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
+<!-- ============================================================
+     BEACH CAR PAGE
      ============================================================ -->
 <div class="page" id="page-beach-car">
   <div class="game-hero">
-    <div class="game-hero-bg parallax-bg"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
-    <div class="game-hero-overlay"><!--<img class = "picture" src="BEACH_CAR_OVERLAY.png" style="width:100%;"/>--></div>
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
-      <h1>Beach Car Game</h1>
-      <div class="hero-tags">
-        <span class="tag muted">Solo</span>
-        <span class="tag muted">Design-Focused</span>
-        <span class="tag muted">Unity</span>
-      </div>
+      <h1>Beach Car!</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
 
   <div class="container">
-    <div class="video-section">
-      <div class="video-wrap">
-        <div class="video-placeholder">
-          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
-          <p>[ YouTube embed — Beach Car Game ]</p>
-        </div>
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>You and your SoCal surf gang went North for a surf in San Francisco, but ran into a bunch of angry motorcyclists! Speed back south to San Diego in the SURF ROCK road trip adventure Beach Car! Balance risk and reward, stay ahead of the motorgang while keeping your ride running!</p>
+        <p>In crafting this short text-adventure for my course “Art of the Game,” many pieces of my game design process were stripped back and focused on to create a clearly-documented, powerfully-tested, and finely reflected result. This project brought unique challenges in adding a high-speed car-chase driving game feel to the typically slower text adventure format. The intentionality of my design process as documented helped create this unique and accessible experience for players.</p>
       </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Screenshots</span></div>
-      <div class="gallery-scroll">
-        <div class="gallery-item"><span>bcg_screen_01.png</span></div>
-        <div class="gallery-item"><span>bcg_screen_02.png</span></div>
-        <div class="gallery-item"><span>bcg_screen_03.png</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">My Role</span><h2 class="mt1">Solo Developer</h2></div>
-      <div class="prose">
-        <p>[Placeholder] Beach Car Game is a solo project with heavy emphasis on design documentation. Every mechanic has a corresponding design rationale, and the project served as a testing ground for structured design process habits I wanted to build before tackling larger projects.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Design Process</span></div>
-      <div class="expand-group">
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Level Design Sketches
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] All levels were sketched on paper before any geometry was built in Unity. The sketches defined the flow of each level — where speed is built, where it must be shed, and where the player has choices. Annotated scans are included here.</p>
-              <div class="sketch-placeholder"><span>bcg_level_sketch_01.jpg</span></div>
-              <div class="sketch-placeholder"><span>bcg_level_sketch_02.jpg</span></div>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Level Design Sketches PDF (placeholder)</a>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Paper &amp; Pencil Tutorial Design
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] Before building anything, I designed the tutorial entirely on paper. This involved writing out every mechanic the player needs to learn, ordering them by dependency, and mapping each to a specific moment in the first level. The paper system became the spec the game was built against.</p>
-              <div class="sketch-placeholder"><span>paper_tutorial_scan.jpg</span></div>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Tutorial Design Document (PDF placeholder)</a>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Core Design Document
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] A full design document covers the game's core loop, intended player experience, mechanic list, art direction notes, and scope boundaries. Written before development began and updated as the project evolved.</p>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Full Design Document (PDF placeholder)</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Reflection</span></div>
-      <div class="prose">
-        <p>[Placeholder] Beach Car Game was where I committed to process-first development. Writing the tutorial on paper before touching Unity forced clarity about what the game actually needed to teach — and revealed several mechanics I'd planned that were redundant or confusing.</p>
-      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
     </div>
   </div>
-  <footer>
-    <span class="mono">Beach Car Game — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
-  </footer>
 </div>
-
 <!-- ============================================================
-     POP-OFF! PAGE
+     POP-OFF PAGE
      ============================================================ -->
-<div class="page" id="page-popoff">
+<div class="page" id="page-pop-off">
   <div class="game-hero">
-    <div class="game-hero-bg parallax-bg"><img class = "picture" src="POP_OFF_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="POP_OFF_BG.png" style="width:100%;"/></div>
     <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
       <h1>Pop-Off!</h1>
-      <div class="hero-tags">
-        <span class="tag muted">Concept</span>
-        <span class="tag muted">Genre Mashup</span>
-        <span class="tag muted">Team</span>
-      </div>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
 
   <div class="container">
-    <div class="video-section">
-      <div class="video-wrap">
-        <div class="video-placeholder">
-          <div class="play-btn"><svg width="18" height="20" viewBox="0 0 18 20"><path d="M0 0L18 10L0 20V0Z"/></svg></div>
-          <p>[ YouTube embed — Pop-Off! ]</p>
-        </div>
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Pop-Off is a genre-blend between rhythm game and turn-based RPG in which players battle against top pop icons. Developed for the Girly Pop Game Jam, Pop-Off blends the aesthetic and systemic in a simple yet precise way. Varying rhythm difficulties and asymmetric rhythm sections for different party members create an interesting risk-reward feeling in this battle of the bands.</p>
       </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Screenshots</span></div>
-      <div class="gallery-scroll">
-        <div class="gallery-item"><span>po_screen_01.png</span></div>
-        <div class="gallery-item"><span>po_screen_02.png</span></div>
-        <div class="gallery-item"><span>po_screen_03.png</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Concept Origin</span><h2 class="mt1">Genre Mashup Analysis</h2></div>
-      <div class="prose">
-        <p>[Placeholder] Pop-Off! originated from a question: what happens when you apply the tension structure of a battle-royale to a casual party game? The concept emerged from analyzing what creates pressure in competitive games and how that pressure can be made legible to non-competitive players.</p>
-        <p>[Placeholder] I documented the genre analysis process — mapping the mechanics of both parent genres, identifying overlaps and conflicts, and finding the design space where a mashup could be coherent rather than chaotic.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">My Role &amp; Contributions</span></div>
-      <div class="prose">
-        <p>[Placeholder] On Pop-Off! I contributed the core concept framing and the initial design document. I also handled [placeholder role description] during development. The game was built collaboratively with a [placeholder team size] team.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header"><span class="label">Reflection</span></div>
-      <div class="prose">
-        <p>[Placeholder] The hardest part of Pop-Off! was keeping the genre mashup from becoming incoherent. Every mechanic had to earn its place by serving both the casual accessibility goal and the competitive tension goal simultaneously. Some mechanics we designed failed this test and were cut.</p>
-      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
     </div>
   </div>
-  <footer>
-    <span class="mono">Pop-Off! — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← All Games</a></div>
-  </footer>
 </div>
-
 <!-- ============================================================
-     SMALL PROJECTS PAGE
+     BUILD YOUR OWN PLATFORMER
      ============================================================ -->
-<div class="page" id="page-small-projects">
-  <div class="container">
-    <div class="page-header">
-      <span class="label">06 — Collection</span>
-      <h1 class="mt1">Small Projects</h1>
-      <p class="mt1">Experiments, jam games, and demos that don't fit neatly elsewhere.</p>
+<div class="page" id="page-byop">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Build Your Own Platformer</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
-    <section class="section">
-      <div class="small-proj-grid">
-        <!-- It's About Slime -->
-        <div class="proj-card" style="position:relative;">
-          <div class="card-border-accent"></div>
-          <div class="card-thumb"><span class="thumb-label mono">[ ITS_ABOUT_SLIME_THUMB.PNG ]</span></div>
-          <div class="proj-card-body">
-            <h3>It's About Slime</h3>
-            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
-            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
-          </div>
-        </div>
-        <!-- Gravitation -->
-        <div class="proj-card" style="position:relative;">
-          <div class="card-border-accent"></div>
-          <div class="card-thumb"><span class="thumb-label mono">[ GRAVITATION_THUMB.PNG ]</span></div>
-          <div class="proj-card-body">
-            <h3>Gravitation</h3>
-            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
-            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
-          </div>
-        </div>
-        <!-- Go Kart Demo -->
-        <div class="proj-card" style="position:relative;">
-          <div class="card-border-accent"></div>
-          <div class="card-thumb"><span class="thumb-label mono">[ GO_KART_THUMB.PNG ]</span></div>
-          <div class="proj-card-body">
-            <h3>Go Kart Demo</h3>
-            <p>[Placeholder] A short exploration game built around manipulating local gravity fields. The player navigates a surreal environment where every surface can become a floor. Built in [engine placeholder] over [timeframe placeholder].</p>
-            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
-          </div>
-        </div>
-        <!-- Summer '25 Game Demos -->
-        <div class="proj-card" style="position:relative;">
-          <div class="card-border-accent"></div>
-          <div class="card-thumb"><span class="thumb-label mono">[ SUMMER25_THUMB.PNG ]</span></div>
-          <div class="proj-card-body">
-            <h3>Summer '25 Game Demos</h3>
-            <p>[Placeholder] A collection of small game demos built during summer 2025, each exploring a single mechanic or aesthetic idea. Topics include [placeholder mechanic 1], [placeholder mechanic 2], and [placeholder mechanic 3].</p>
-            <a href="#" class="ext-link" onclick="return false;">View Collection →</a>
-          </div>
-        </div>
-        <!-- Liar in Our Group -->
-        <div class="proj-card" style="position:relative;">
-          <div class="card-border-accent"></div>
-          <div class="card-thumb"><span class="thumb-label mono">[ LIAR_THUMB.PNG ]</span></div>
-          <div class="proj-card-body">
-            <h3>Liar in Our Group</h3>
-            <p>[Placeholder] A social deduction game for [placeholder player count] players inspired by the social dynamics of online multiplayer spaces. Players must identify an asymmetric information holder through [placeholder mechanic description].</p>
-            <a href="#" class="ext-link" onclick="return false;">Play on itch.io →</a>
-          </div>
-        </div>
-      </div>
-    </section>
   </div>
-  <footer>
-    <span class="mono">Small Projects — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← Home</a></div>
-  </footer>
-</div>
 
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Build Your Own Platformer is a creative tool helping players build their own platformer game levels and players. Easy-to-use, yet with a robustness and level of user freedom rare in typical level builders.</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
 <!-- ============================================================
-     MUSIC & SOUND PAGE
+     GRAVITATION PAGE
      ============================================================ -->
-<div class="page" id="page-music">
-  <div class="container">
-    <div class="page-header">
-      <span class="label">07 — Audio</span>
-      <h1 class="mt1">Music &amp; Sound</h1>
-      <p class="mt1">Original compositions, sound design, and audio work across projects.</p>
+<div class="page" id="page-gravitation">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Gravitation</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
-    <section class="section">
-      <div class="game-section-header" style="border-top:none;padding-top:0;">
-        <span class="label">Role &amp; Tools</span>
-      </div>
-      <div class="prose" style="margin-bottom:3rem;">
-        <p>[Placeholder] I compose and produce all original music for my projects, primarily in [DAW placeholder]. I approach sound design as an extension of game feel — every audio event should reinforce the physical sensation the player is experiencing. My work on Nitrojet's 40-track soundtrack informed how I think about pacing and emotional arc in longer-form compositions.</p>
-        <p>[Placeholder] Tools: [DAW placeholder], FMOD for adaptive audio integration, original foley recordings, and [synthesizer/plugin placeholder].</p>
-      </div>
-
-      <span class="label" style="display:block;margin-bottom:1.2rem;">Tracks</span>
-      <div class="audio-list">
-        <div class="audio-item">
-          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-          <div style="flex:1">
-            <div style="font-size:.9rem;margin-bottom:.3rem;">Nitrojet — Main Theme</div>
-            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
-          </div>
-          <div class="audio-meta"><span class="dur">3:42</span></div>
-        </div>
-        <div class="audio-item">
-          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-          <div style="flex:1">
-            <div style="font-size:.9rem;margin-bottom:.3rem;">Nitrojet — Boss Theme 01</div>
-            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
-          </div>
-          <div class="audio-meta"><span class="dur">2:15</span></div>
-        </div>
-        <div class="audio-item">
-          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-          <div style="flex:1">
-            <div style="font-size:.9rem;margin-bottom:.3rem;">Safe Travels — Ambient Loop</div>
-            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
-          </div>
-          <div class="audio-meta"><span class="dur">4:01</span></div>
-        </div>
-        <div class="audio-item">
-          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-          <div style="flex:1">
-            <div style="font-size:.9rem;margin-bottom:.3rem;">Beach Car Game — Menu Track</div>
-            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
-          </div>
-          <div class="audio-meta"><span class="dur">1:58</span></div>
-        </div>
-        <div class="audio-item">
-          <div class="audio-play" onclick="fakePlay(this)"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0L12 7L0 14V0Z"/></svg></div>
-          <div style="flex:1">
-            <div style="font-size:.9rem;margin-bottom:.3rem;">27 Photos — Puzzle Solved Sting</div>
-            <div class="audio-bar"><div class="audio-bar-fill"></div></div>
-          </div>
-          <div class="audio-meta"><span class="dur">0:08</span></div>
-        </div>
-      </div>
-    </section>
   </div>
-  <footer>
-    <span class="mono">Music &amp; Sound — Silas Heaphy</span>
-    <div class="ft-links"><a onclick="nav('home')">← Home</a></div>
-  </footer>
-</div>
 
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Gravitation is a Newtonian-gravity-based Crystal-Quest-esque arcade game (initially developed to procrastinate on a college astronomy assignment). Carefully built and tested simulation to ensure fair challenge to player while still creating chaotic feel.</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
+<!-- ============================================================
+     DICE BOWLING PAGE
+     ============================================================ -->
+<div class="page" id="page-dice-bowling">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="DICE_BOWLING_THUMB.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>Dice Bowling</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Dice Bowling, created for GMTK Game Jam 2022 with the theme “roll of the dice,” is an arcade game about throwing a dice (yourself) around a table to mow through hoards of coins. High rolls make you effective against coins while low rolls make you vulnerable. Keep on moving to keep the odds in your favor!</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
+<!-- ============================================================
+     ITS ABOUT SLIME PAGE
+     ============================================================ -->
+<div class="page" id="page-its-about-slime">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>It's About Slime</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>Initially developed for Ludum Dare 46 before later being fleshed out, “It's About Slime” is an arcade game in which a gang of milkmen, each with different milky movesets, keep the last milk trees alive against infinite hoards of purple slimes. Through fleshing out this game's different maps, player characters, and multiplayer mode, I pushed my skills with balancing different movesets, creating diverse and highly-replayable gameplay that still provides a fair challenge across combinations. Additionally, I worked throughout the game's iteration to increase and hone game feel, ending in a simple yet unique and satisfying arcade experience.</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
+<!-- ============================================================
+     THE FOG PAGE
+     ============================================================ -->
+<div class="page" id="page-the-fog">
+  <div class="game-hero">
+    <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
+    <div class="game-hero-overlay"></div>
+    <div class="game-hero-content">
+      <h1>The Fog</h1>
+      <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="game-section" style="width:100%;">
+      <div class="prose" style="width: 50%; text-align: center; margin: auto">
+        <p>The Fog is an atmospheric exploration platformer in which players gather lanterns to survive a mysterious and sinister fog in an abandoned landscape while fighting off creatures of shade and trying to uncover the nature of the fog. Released in 2019 as one of my first completed large game projects, The Fog certainly shows its age. Regardless, it taught me an incredible amount in all parts of game development including level and mechanical design, player progression, music, atmosphere, playtesting, and balancing, all skills which have enabled me and continued to develop for the projects to come.</p>
+      </div>
+      <!--<div style=" text-align: center; margin: auto;">
+          <a href="#" target="_blank" class="steam-link">
+            27 Photos on Itch.io
+          </a>
+      </div> 
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>-->
+    </div>
+  </div>
+</div>
 <!-- ============================================================
      ABOUT PAGE
      ============================================================ -->
 <div class="page" id="page-about">
   <div class="container">
     <div class="page-header">
-      <span class="label">08 — About</span>
       <h1 class="mt1">About Silas</h1>
     </div>
     <section class="section">
       <div class="about-grid">
         <div>
-          <div class="about-headshot"><span>[ PHOTO ]</span></div>
+          <span class="hs-label mono"><img class = "picture" src="HEADSHOT.jpg" style="width:100%;"/></span>
         </div>
         <div class="about-text">
-          <h2>Yale CS, Game Design Focus</h2>
-          <p>[Placeholder] I'm a freshman studying Computer Science at Yale University. Before Yale, I was building games independently — the kind of obsessive, years-long solo projects that teach you everything textbooks don't cover. That's where Nitrojet came from.</p>
-          <p>[Placeholder] At Yale I'm continuing to develop games while studying the theoretical foundations that explain why games feel the way they do. I'm particularly interested in the overlap between systems design and player psychology — how rule structures create emotional experiences.</p>
-          <p>[Placeholder] I work in Unity and Godot, compose all my own music, do my own sound design, and write extensive design documentation before and during every project. I believe the design process — the thinking, the iteration, the documentation — is as important as the final artifact.</p>
-
-          <h3>Game Design Philosophy</h3>
-          <p>[Placeholder] Good game design is invisible. When a player feels smart, capable, or surprised, they're feeling the design working — not seeing it. My goal in every project is to create systems that generate those moments as reliably as possible, with as little friction as possible.</p>
-          <p>[Placeholder] I'm drawn to movement as a primary mechanic. How a player moves through a space tells them what the game values. If movement feels good, everything built around it has a better chance of feeling good too.</p>
-
-          <h3>Currently Seeking</h3>
-          <p>Game design internships for summer 2025. I'm interested in roles focused on systems design, level design, or gameplay programming. Open to studios of all sizes.</p>
+          <p>        Hi, I'm Silas Heaphy, a game designer, developer, and current Yale computer science student. For the last nine years, inspired by indie games I would play as a kid like Undertale and Stardew Valley, I've been creating video games. I love exploring how novel approaches to gameplay and level design can shape narrative experience and am fascinated by unique mechanics and integrations of music and storytelling.</p>
+          <p>        This curiosity has driven everything I've built. I've published two games on Steam through my solo studio Ice Fruit Games, participated in numerous game jams, written soundtracks, taught myself game art and code, all to make my ideas a reality. I've worked through countless designs, documents, prototypes, and testing sessions, even becoming a designer with Yale studio Amoriem Labs, refining my skills in collaboration and communication among a larger team. Through it all, I've learned not only how to design, but to hone, develop, polish, and complete.</p>
+          <p>        I grew up in the small mountain town of Minturn, Colorado, a community blending the wild and historic which inspires the sense of adventure, exploration, and the unknown which I seek to convey in my game experiences. I've explored themes of friendship, isolation, COVID, and growing up, developed chaotic metroidvanias, road-trip horror, and any number of simulations and worlds to explore, each to create the kind of novel, one-of-a-kind adventures which games can enable. I want to keep pushing how mechanics and level design can drive exploration and narrative experiences.</p>
         </div>
       </div>
     </section>
   </div>
   <footer>
-    <span class="mono">About — Silas Heaphy</span>
     <div class="ft-links"><a onclick="nav('contact')">Contact →</a></div>
   </footer>
 </div>
@@ -1597,38 +1428,19 @@ footer .ft-links a:hover { color: var(--teal); }
 <div class="page" id="page-contact">
   <div class="container">
     <div class="page-header">
-      <span class="label">09 — Contact</span>
       <h1 class="mt1">Get in Touch</h1>
-      <p class="mt1">Open to internship opportunities, collaboration, and conversation about games.</p>
+      <p class="mt1">Open to internship opportunities, collaboration, and conversation.</p>
     </div>
     <section class="section">
       <div class="contact-links">
-        <a href="mailto:placeholder@yale.edu" class="contact-link">
+        <a href="mailto: silas.heaphy@gmail.com" class="contact-link">
           <span class="contact-link-icon">EMAIL</span>
-          <span class="contact-link-text">placeholder@yale.edu</span>
+          <span class="contact-link-text">silas.heaphy@gmail.com</span>
         </a>
-        <a href="#" class="contact-link" onclick="return false;">
-          <span class="contact-link-icon">GITHUB</span>
-          <span class="contact-link-text">github.com/placeholder</span>
-        </a>
-        <a href="#" class="contact-link" onclick="return false;">
-          <span class="contact-link-icon">ITCH.IO</span>
-          <span class="contact-link-text">placeholder.itch.io</span>
-        </a>
-        <a href="#" class="contact-link" onclick="return false;">
-          <span class="contact-link-icon">RESUME</span>
-          <span class="contact-link-text">Download PDF — placeholder</span>
-        </a>
+        
       </div>
     </section>
-  </div>
-  <footer>
-    <span class="mono">© 2025 Silas Heaphy</span>
-    <div class="ft-links">
-      <a href="#">GitHub</a>
-      <a href="#">itch.io</a>
-    </div>
-  </footer>
+  </div>=
 </div>
 
 <!-- ============================================================
@@ -1640,11 +1452,15 @@ const PAGES = {
   'home':           'page-home',
   'nitrojet':       'page-nitrojet',
   'safe-travels':   'page-safe-travels',
-  '27photos':       'page-27photos',
+  '27-photos':       'page-27-photos',
+  'critters':       'page-critters',
   'beach-car':      'page-beach-car',
-  'popoff':         'page-popoff',
-  'small-projects': 'page-small-projects',
-  'music':          'page-music',
+  'pop-off':         'page-pop-off',
+  'byop':         'page-byop',
+  'gravitation':         'page-gravitation',
+  'dice-bowling':         'page-dice-bowling',
+  'its-about-slime':         'page-its-about-slime',
+  'the-fog':         'page-the-fog',
   'about':          'page-about',
   'contact':        'page-contact',
 };
