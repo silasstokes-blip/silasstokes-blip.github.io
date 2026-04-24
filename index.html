@@ -528,6 +528,41 @@ a { color: inherit; text-decoration: none; }
 }
 .callout-box .desc { font-size: 0.75rem; color: var(--text-muted); }
 
+/* Trailer floated into prose */
+.prose-with-trailer {
+  width: 100%;
+  text-align: left;
+}
+.prose-with-trailer::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.prose-with-trailer p {
+  max-width: none;
+}
+.trailer-float {
+  float: right;
+  width: 50%;          /* bump up from 50% — gives it more presence */
+  margin: 0.8rem 0 1.2rem 2.5rem;  /* top margin pushes it down from the first text line */
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--border);
+}
+.trailer-float iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+@media (max-width: 720px) {
+  .trailer-float {
+    float: none;
+    width: 100%;
+    margin: 1rem 0;
+  }
+}
+
 /* ============================================================
    SMALL PROJECTS PAGE
    ============================================================ */
@@ -784,7 +819,6 @@ footer .ft-links a:hover { color: var(--teal); }
           </div>
           <div class="card-body">
             <div class="card-tags">
-              <span class="tag wip">WIP</span>
               <span class="tag muted">Puzzle</span>
               <span class="tag muted">Level Design</span>
               <span class="tag muted">Documentation</span>
@@ -813,7 +847,7 @@ footer .ft-links a:hover { color: var(--teal); }
           <div class="card-border-accent"></div>
           <div class="card-thumb"><span class="thumb-label mono"><img class = "picture" src="27_PHOTOS_THUMB.png" style="width:100%;"/></span></div>
           <div class="card-body">
-            <div class="card-tags"><span class="tag wip">WIP</span><span class="tag muted">Puzzle</span><span class="tag muted">Documentation</span></div>
+            <div class="card-tags"><span class="tag muted">Puzzle</span><span class="tag muted">Documentation</span></div>
             <h3>27 Photos</h3>
             <p>Designer for photo-taking puzzle narrative game, working alongside 20+ person team.</p>
           </div>
@@ -878,7 +912,7 @@ footer .ft-links a:hover { color: var(--teal); }
           <div class="card-body">
             <div class="card-tags"><span class="tag muted">Arcade</span></div>
             <h3>Dice Bowling</h3>
-            <p>Arcade game where each roll of the dice (roll of yourself?) is the difference between triumpth and failure.</p>
+            <p>Arcade game where each roll of the dice (roll of yourself?) is the difference between triumph and failure.</p>
           </div>
         </div>
         <div class="game-card" onclick="nav('its-about-slime')">
@@ -954,10 +988,25 @@ footer .ft-links a:hover { color: var(--teal); }
     
 
     <div class="game-section" style="width:100%;">
-      <div class="prose" style="width: 50%; text-align: center; margin: auto">
-        <p>Nitrojet is an expansive and chaotic metroidvania where everything is destructible. Struggle against hordes of airborne beasts through sprawling ruins. Overcome the odds to take your throne as the flame-borne god of destruction. </p>
-        <p>Over its three year development, Nitrojet taught me an incredible amount in design, development, publishing, and more. The game's scale (12 areas, 20+ hour gameplay, 700+ audio files, ~40k lines of code, 46 enemies, 14 bosses, etc.) called for attention to long-term player progression and difficulty, and the mechanical novelty called for unique and mindful approaches to mechanics and level design. Built off a unique and cohesive moveset, high-speed airborne combat, and a truly rare level of environmental destructibility, Nitrojet brought a number of challenges in terms of long-term project management, player-conducive level design, and large-project development. In the end, through extensive iteration and strong design, it became a truly one-of-a-kind action adventure.</p>
+
+      <div class="game-section" style="width:100%;">
+        <div class="prose prose-with-trailer">
+          <div class="trailer-float">
+            <iframe 
+              src="https://www.youtube.com/embed/9s1B8AYXSP4?rel=0&modestbranding=1"
+              title="Nitrojet trailer"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <p>Nitrojet is an expansive and chaotic metroidvania where everything is destructible. Struggle against hordes of airborne beasts through sprawling ruins. Overcome the odds to take your throne as the flame-borne god of destruction.</p>
+          <p>Over its three year development, Nitrojet taught me an incredible amount in design, development, publishing, and more. The game's scale (12 areas, 20+ hour gameplay, 700+ audio files, ~40k lines of code, 46 enemies, 14 bosses, etc.) called for attention to long-term player progression and difficulty, and the mechanical novelty called for unique and mindful approaches to mechanics and level design. Built off a unique and cohesive moveset, high-speed airborne combat, and a truly rare level of environmental destructibility, Nitrojet brought a number of challenges in terms of long-term project management, player-conducive level design, and large-project development.</p>
+          <p>The final game succeeded in it's mission of novel and fast-paced movement and combat alongside vast and empowering exploration, while suffering major flaws in bugginess, art style, and certain player communication. In the end, through extensive iteration, it became a truly one-of-a-kind if rough-around-the-edges action adventure through which I learned an immense amount as a designer and developer.</p>
+        </div>
+        <!-- Steam button + gallery stay the same below -->
       </div>
+
       <div style=" text-align: center; margin: auto;">
           <a href="https://store.steampowered.com/app/1563210/Nitrojet/" target="_blank" class="steam-link">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.187.007l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
@@ -972,94 +1021,6 @@ footer .ft-links a:hover { color: var(--teal); }
       </div>
     </div>
 
-    <!--<div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Scale</span>
-        <h2 class="mt1">A Full-Scale Solo Project</h2>
-      </div>
-      <div class="callout-row">
-        <div class="callout-box"><span class="num">12</span><span class="desc">Unique Bosses</span></div>
-        <div class="callout-box"><span class="num">6</span><span class="desc">Distinct Areas</span></div>
-        <div class="callout-box"><span class="num">40+</span><span class="desc">Soundtrack Tracks</span></div>
-        <div class="callout-box"><span class="num">18mo</span><span class="desc">Development Time</span></div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">My Role</span>
-        <h2 class="mt1">Solo Developer</h2>
-      </div>
-      <div class="prose">
-        <p>[Placeholder] As the sole developer, I handled every aspect of Nitrojet — from core systems programming in Unity to boss AI design, level layout, UI/UX, sound design, and the full original soundtrack. This project pushed my ability to manage scope across a long development cycle while maintaining design coherence.</p>
-        <p>[Placeholder] I focused particularly on movement mechanics, ensuring the player's momentum felt satisfying at every speed. Iteration on the feel of movement drove many other design decisions downstream.</p>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Design Process</span>
-        <h2 class="mt1">From Paper to Final</h2>
-      </div>
-      <div class="compare-grid">
-        <div class="compare-item">
-          <div class="compare-thumb"><span>paper_sketch_01.jpg</span></div>
-          <span class="compare-label">Early paper prototype</span>
-        </div>
-        <div class="compare-item">
-          <div class="compare-thumb"><span>final_screenshot_01.png</span></div>
-          <span class="compare-label">Final in-game implementation</span>
-        </div>
-      </div>
-      <div class="expand-group">
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Progression Design
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] The progression system in Nitrojet was designed around giving the player growing agency without overwhelming them. I'll describe the loop here — unlock gates, ability sequencing, and how boss placement informed pacing.</p>
-              <div class="sketch-placeholder"><span>progression_diagram.jpg</span></div>
-              <a href="#" class="pdf-link" onclick="return false;">↓ Progression Design Doc (PDF placeholder)</a>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Movement Mechanics Analysis
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] Movement in Nitrojet is built around a boosting and airtime system. I analyzed how speed creates risk-reward loops and how the player learns to abuse the physics system intentionally. This section breaks down the values, feel iterations, and how movement informs level geometry.</p>
-              <div class="sketch-placeholder"><span>movement_analysis_sketch.jpg</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="expand-item">
-          <button class="expand-trigger" onclick="toggleExpand(this)">
-            Tutorial Design
-            <div class="expand-icon"><svg viewBox="0 0 10 10"><path d="M5 1v8M1 5h8"/></svg></div>
-          </button>
-          <div class="expand-content">
-            <div class="expand-content-inner">
-              <p>[Placeholder] I designed the tutorial around implicit teaching — the first area is structured to demonstrate mechanics through geometry rather than text prompts. This section covers the philosophy and the specific rooms used to introduce each mechanic.</p>
-              <div class="sketch-placeholder"><span>tutorial_flowchart.jpg</span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="game-section">
-      <div class="game-section-header">
-        <span class="label">Reflection</span>
-      </div>
-      <div class="prose">
-        <p>[Placeholder] Building Nitrojet as a solo project taught me how to ruthlessly cut scope without losing design vision. The biggest lesson was that the feel of a game emerges from hundreds of small decisions — none of which can be delegated. I'd approach boss design differently next time, focusing earlier on readable silhouettes and attack telegraphing.</p>
-      </div>
-    </div>-->
   </div>
 </div>
 
@@ -1102,9 +1063,9 @@ footer .ft-links a:hover { color: var(--teal); }
 <div class="page" id="page-27-photos">
   <div class="game-hero">
     <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="27_PHOTOS_BG.png" style="width:100%;"/></div>
-    <div class="game-hero-overlay"></div>
+    <div class="game-hero-overlay"><img class = "picture" src="27_PHOTOS_OVERLAY.png" style="width:100%;"/></div>
     <div class="game-hero-content">
-      <h1>27 Photos</h1>
+      <!--<h1>27 Photos</h1>-->
       <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
@@ -1115,17 +1076,17 @@ footer .ft-links a:hover { color: var(--teal); }
         <p>27 Photos follows the adventures of a young woman named Cam as she explores a tower of memories, using her camera to rediscover her past and work through the puzzles of her own story. The diverse puzzle systems and gradual approach to player information necessitated an astute eye in puzzle design and level progression.</p>
         <p>As a game designer for the 28 person team for this game, I worked on mechanical systems with the photo mechanic and puzzles, level design for knowledge-based game progression, and UI and tutorial design to help guide player knowledge. This necessitated extensive prototyping, documentation, mockups, and communication across tools and teams, building my cooperative skills in game development, my knowledge of design tools, and my understanding of the demands of puzzle design.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://amoriem-labs.itch.io/27-photos" target="_blank" class="steam-link">
             27 Photos on Itch.io
           </a>
-      </div>-->
+      </div>
       <div class="gallery-scroll" style="padding: 20px;">
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_Photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_Photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_Photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_Photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="27_Photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
       </div>
     </div>
   </div>
@@ -1170,25 +1131,40 @@ footer .ft-links a:hover { color: var(--teal); }
 <div class="page" id="page-beach-car">
   <div class="game-hero">
     <div class="game-hero-bg parallax-bg" id="bg-nitrojet"><img class = "picture" src="BEACH_CAR_BG.png" style="width:100%;"/></div>
-    <div class="game-hero-overlay"></div>
+    <div class="game-hero-overlay"><img class = "picture" src="BEACH_CAR_OVERLAY.png" style="width:100%;"/></div>
     <div class="game-hero-content">
-      <h1>Beach Car!</h1>
+      <!--<h1>Beach Car!</h1>-->
       <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
-
   <div class="container">
     <div class="game-section" style="width:100%;">
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>You and your SoCal surf gang went North for a surf in San Francisco, but ran into a bunch of angry motorcyclists! Speed back south to San Diego in the SURF ROCK road trip adventure Beach Car! Balance risk and reward, stay ahead of the motorgang while keeping your ride running!</p>
         <p>In crafting this short text-adventure for my course “Art of the Game,” many pieces of my game design process were stripped back and focused on to create a clearly-documented, powerfully-tested, and finely reflected result. This project brought unique challenges in adding a high-speed car-chase driving game feel to the typically slower text adventure format. The intentionality of my design process as documented helped create this unique and accessible experience for players.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+
+      <div style=" text-align: center; margin: auto;">
+          <a href="beachCar.html" target="_blank" class="steam-link">
+            Play Beach Car
           </a>
       </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://docs.google.com/document/d/1apXrDesqEN5FDyPpT3oxSNmgEiPrOp-Lb5eZjyfBDqg/edit?usp=sharing" target="_blank" class="steam-link">
+            Project Write-up
+          </a>
+      </div> 
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://miro.com/welcomeonboard/MHRWVldEdHkrU2srdG4yN0lzMFd0NDE0WEhHSjFnaVk4NitWR0o4bU44OHZHbmNVSE80Tk9FTmRubEp6M3lGeHBob0pOQ3owQkp4K0JWWXk3cWdWZ2xGNUVOaHJkZjZHbWs2WWpaSkh1MzNVbGNPeXB4L1FCNmVHMzgxY2VEM3lQdGo1ZEV3bUdPQWRZUHQzSGl6V2NBPT0hdjE=?share_link_id=702014723320" target="_blank" class="steam-link">
+            Miro Board
+          </a>
+      </div> 
+      <div style=" text-align: center; margin: auto;">
+          <a href="beachCarOG.html" target="_blank" class="steam-link">
+            Beach Car Draft
+          </a>
+      </div> 
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1216,11 +1192,11 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>Pop-Off is a genre-blend between rhythm game and turn-based RPG in which players battle against top pop icons. Developed for the Girly Pop Game Jam, Pop-Off blends the aesthetic and systemic in a simple yet precise way. Varying rhythm difficulties and asymmetric rhythm sections for different party members create an interesting risk-reward feeling in this battle of the bands.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://ice-fruit-games.itch.io/pop-off" target="_blank" class="steam-link">
+            Pop-Off! on Itch.io
           </a>
-      </div> 
+      </div> <!--
       <div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1282,12 +1258,12 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>Gravitation is a Newtonian-gravity-based Crystal-Quest-esque arcade game (initially developed to procrastinate on a college astronomy assignment). Carefully built and tested simulation to ensure fair challenge to player while still creating chaotic feel.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://ice-fruit-games.itch.io/gravitation" target="_blank" class="steam-link">
+            Gravitation on Itch.io
           </a>
       </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1315,12 +1291,12 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>Dice Bowling, created for GMTK Game Jam 2022 with the theme “roll of the dice,” is an arcade game about throwing a dice (yourself) around a table to mow through hoards of coins. High rolls make you effective against coins while low rolls make you vulnerable. Keep on moving to keep the odds in your favor!</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://ice-fruit-games.itch.io/dice-bowling" target="_blank" class="steam-link">
+            Dice Bowling on Itch.io
           </a>
       </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1348,12 +1324,12 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>Initially developed for Ludum Dare 46 before later being fleshed out, “It's About Slime” is an arcade game in which a gang of milkmen, each with different milky movesets, keep the last milk trees alive against infinite hoards of purple slimes. Through fleshing out this game's different maps, player characters, and multiplayer mode, I pushed my skills with balancing different movesets, creating diverse and highly-replayable gameplay that still provides a fair challenge across combinations. Additionally, I worked throughout the game's iteration to increase and hone game feel, ending in a simple yet unique and satisfying arcade experience.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://ice-fruit-games.itch.io/its-about-slime" target="_blank" class="steam-link">
+            It's About Slime (Ludum Dare) on Itch.io
           </a>
       </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1381,12 +1357,13 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>The Fog is an atmospheric exploration platformer in which players gather lanterns to survive a mysterious and sinister fog in an abandoned landscape while fighting off creatures of shade and trying to uncover the nature of the fog. Released in 2019 as one of my first completed large game projects, The Fog certainly shows its age. Regardless, it taught me an incredible amount in all parts of game development including level and mechanical design, player progression, music, atmosphere, playtesting, and balancing, all skills which have enabled me and continued to develop for the projects to come.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://store.steampowered.com/app/1140490/The_Fog/" target="_blank" class="steam-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.187.007l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.606 0 11.979 0z"/></svg>
+            The Fog on Steam
           </a>
-      </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      </div>
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
