@@ -75,7 +75,7 @@ a { color: inherit; text-decoration: none; }
    LAYOUT
    ============================================================ */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-.section { padding: 5rem 0; }
+.section { padding: 1rem 0; }
 .section + .section { border-top: 1px solid var(--border); }
 
 /* ============================================================
@@ -180,7 +180,7 @@ a { color: inherit; text-decoration: none; }
    HOME PAGE
    ============================================================ */
 #home-hero {
-  padding: 6rem 0 5rem;
+  padding: 2rem 0 2rem;
   border-bottom: 1px solid var(--border);
 }
 .bio-grid {
@@ -220,7 +220,7 @@ a { color: inherit; text-decoration: none; }
   margin: 0.5rem 0 1.5rem;
   letter-spacing: 0.05em;
 }
-.bio-content p { margin-bottom: 2rem; }
+.bio-content p { margin-bottom: 1rem; }
 
 .skills-list {
   display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none;
@@ -229,7 +229,7 @@ a { color: inherit; text-decoration: none; }
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.06em;
-  padding: 0.35rem 0.8rem;
+  padding: 0.35rem 0.3rem;
   border: 1px solid var(--border);
   color: var(--text-muted);
 }
@@ -237,7 +237,7 @@ a { color: inherit; text-decoration: none; }
 /* ============================================================
    GAME CARDS
    ============================================================ */
-.cards-section { padding: 5rem 0; }
+.cards-section { padding: 1rem 0; }
 .cards-header { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 2.5rem; }
 .cards-header h2 { }
 
@@ -247,7 +247,7 @@ a { color: inherit; text-decoration: none; }
   gap: 1.5px;
   background: var(--border);
   border: 1px solid var(--border);
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 @media(max-width:900px){ .featured-grid { grid-template-columns: 1fr; } }
 
@@ -665,7 +665,7 @@ a { color: inherit; text-decoration: none; }
    PAGE HEADER (non-hero pages)
    ============================================================ */
 .page-header {
-  padding: 4rem 0 3rem;
+  padding: 1rem 0 1rem;
   border-bottom: 1px solid var(--border);
 }
 .page-header .label { margin-bottom: 0.8rem; }
@@ -695,7 +695,7 @@ footer .ft-links a:hover { color: var(--teal); }
 
 .section-label-row {
   display: flex; align-items: center; gap: 1rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1rem;
 }
 .section-label-row .line {
   flex: 1; height: 1px; background: var(--border);
@@ -757,13 +757,10 @@ footer .ft-links a:hover { color: var(--teal); }
             <h1>Silas Heaphy</h1>
           </div>
           <p class="tagline">Game Designer &amp; Developer, Yale CS '29</p>
-          <p>Hi, I'm Silas Heaphy, a game designer, developer, and current Yale computer science student. For the last nine years, inspired by indie games I would play as a kid, I've been creating video games. I love pushing how novel approaches to gameplay and level design can shape exploration and narrative experiences and am fascinated by unique mechanics and integrations of music and storytelling. <a class = "myLink" onclick="nav('about')">More →</a></p>
-          <h3>Skills:</h3>
+          <p>Hi, I'm Silas Heaphy, a game designer, developer, and current Yale computer science student. I've been making video games since I was a kid, inspired by indie and narrative games, and I've shipped two titles on Steam (Nitrojet, 2023; The Fog, 2019). I love pushing how novel approaches to gameplay systems and mechanical design can shape exploration and narrative, bringing together rigorous engineering and distinctive creative voice. <a class = "myLink" onclick="nav('about')">More →</a></p>
           <ul class="skills-list">
             <li>Game Design</li>
-            <li>Systems Design</li>
-            <li>Level Design</li>
-            <li>SFX/Music Production</li>
+            <li>Gameplay Programming</li>
             <li>Unity</li>
             <li>GameMaker</li>
           </ul>
@@ -819,6 +816,7 @@ footer .ft-links a:hover { color: var(--teal); }
           </div>
           <div class="card-body">
             <div class="card-tags">
+              <span class="tag wip">WIP</span>
               <span class="tag muted">Puzzle</span>
               <span class="tag muted">Level Design</span>
               <span class="tag muted">Documentation</span>
@@ -839,7 +837,7 @@ footer .ft-links a:hover { color: var(--teal); }
           <div class="card-thumb"><span class="thumb-label mono"></span></div>
           <div class="card-body">
             <div class="card-tags"><span class="tag wip">WIP</span><span class="tag muted">Simulation</span><span class="tag muted">Survival</span></div>
-            <h3>Unnamed Ecosystem Survival Game</h3>
+            <h3>Critters and You</h3>
             <p>A fully-simulated, finely-balanced ecosystem, at risk of collapse for the profit of a single survivalist.</p>
           </div>
         </div>
@@ -1108,7 +1106,7 @@ footer .ft-links a:hover { color: var(--teal); }
     <div class="game-hero-bg parallax-bg" id="bg-nitrojet"></div>
     <div class="game-hero-overlay"></div>
     <div class="game-hero-content">
-      <h1>Unnamed Ecosystem Survival Game</h1>
+      <h1>Critters and You</h1>
       <a class="myLink" onclick="nav('home')" style="font-size: 1rem;">← Back</a>
     </div>
   </div>
@@ -1119,12 +1117,12 @@ footer .ft-links a:hover { color: var(--teal); }
         <p>Unnamed Ecosystem Survival Game is a survival game built off a highly systemic and highly balanced ecosystem simulation. Players must navigate survival and extractive profit off a fully dynamic and highly balanced food chain. Hunting and selling creatures is necessary for profit, but go too far and the ecosystem itself to collapse, leaving the entrepreneur to starve.</p>
         <p>This game called for fine-tuning of systems. It brought the unique challenge of creating a system tuned to stay balanced in perpetuity on its own, but to be subject enough to instability that player actions could create a runaway impact. Design was built around pulling players in two opposite directions, one of moderation to ensure stability and the other of maximizing profit score. This created a unique player conflict which explores the challenges and complexities of real-world environmentalism.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
+      <div style=" text-align: center; margin: auto;">
+          <a href="https://miro.com/app/board/uXjVGms0Lnk=/?share_link_id=906650831798" target="_blank" class="steam-link">
+            Critters and You Miro
           </a>
       </div> 
-      <div class="gallery-scroll" style="padding: 20px;">
+      <!--<div class="gallery-scroll" style="padding: 20px;">
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
         <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
@@ -1245,18 +1243,13 @@ footer .ft-links a:hover { color: var(--teal); }
       <div class="prose" style="width: 50%; text-align: center; margin: auto">
         <p>Build Your Own Platformer is a creative tool helping players build their own platformer game levels and players. Easy-to-use, yet with a robustness and level of user freedom rare in typical level builders.</p>
       </div>
-      <!--<div style=" text-align: center; margin: auto;">
-          <a href="#" target="_blank" class="steam-link">
-            27 Photos on Itch.io
-          </a>
-      </div> 
       <div class="gallery-scroll" style="padding: 20px;">
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-      </div>-->
+        <div class="gallery-item" style="width: auto; height: 280px;"><span style="display: flex; height: 100%;"><img class="picture" src="BYOP_screenshot_01.png" style="height: 280px; width: auto; display: block;"/></span></div>
+        <div class="gallery-item" style="width: auto; height: 280px;"><span style="display: flex; height: 100%;"><img class="picture" src="BYOP_screenshot_02.png" style="height: 280px; width: auto; display: block;"/></span></div>
+        <div class="gallery-item" style="width: auto; height: 280px;"><span style="display: flex; height: 100%;"><img class="picture" src="BYOP_screenshot_03.png" style="height: 280px; width: auto; display: block;"/></span></div>
+        <div class="gallery-item" style="width: auto; height: 280px;"><span style="display: flex; height: 100%;"><img class="picture" src="BYOP_screenshot_04.png" style="height: 280px; width: auto; display: block;"/></span></div>
+        <div class="gallery-item" style="width: auto; height: 280px;"><span style="display: flex; height: 100%;"><img class="picture" src="BYOP_screenshot_05.png" style="height: 280px; width: auto; display: block;"/></span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1289,13 +1282,12 @@ footer .ft-links a:hover { color: var(--teal); }
             Gravitation on Itch.io
           </a>
       </div> 
-      <!--<div class="gallery-scroll" style="padding: 20px;">
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-      </div>-->
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="Gravitation_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Gravitation_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Gravitation_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Gravitation_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1322,13 +1314,12 @@ footer .ft-links a:hover { color: var(--teal); }
             Dice Bowling on Itch.io
           </a>
       </div> 
-      <!--<div class="gallery-scroll" style="padding: 20px;">
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-        <div class="gallery-item"><span><img class = "picture" src="27_photos_screenshot_05.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
-      </div>-->
+      <div class="gallery-scroll" style="padding: 20px;">
+        <div class="gallery-item"><span><img class = "picture" src="Dice_Bowling_screenshot_01.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Dice_Bowling_screenshot_02.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Dice_Bowling_screenshot_03.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+        <div class="gallery-item"><span><img class = "picture" src="Dice_Bowling_screenshot_04.png" style = "object-fit: cover; width: 100%; height: 100%"/></span></div>
+      </div>
     </div>
   </div>
 </div>
@@ -1416,6 +1407,34 @@ footer .ft-links a:hover { color: var(--teal); }
           <p>        Hi, I'm Silas Heaphy, a game designer, developer, and current Yale computer science student. For the last nine years, inspired by indie games I would play as a kid like Undertale and Stardew Valley, I've been creating video games. I love exploring how novel approaches to gameplay and level design can shape narrative experience and am fascinated by unique mechanics and integrations of music and storytelling.</p>
           <p>        This curiosity has driven everything I've built. I've published two games on Steam through my solo studio Ice Fruit Games, participated in numerous game jams, written soundtracks, taught myself game art and code, all to make my ideas a reality. I've worked through countless designs, documents, prototypes, and testing sessions, even becoming a designer with Yale studio Amoriem Labs, refining my skills in collaboration and communication among a larger team. Through it all, I've learned not only how to design, but to hone, develop, polish, and complete.</p>
           <p>        I grew up in the small mountain town of Minturn, Colorado, a community blending the wild and historic which inspires the sense of adventure, exploration, and the unknown which I seek to convey in my game experiences. I've explored themes of friendship, isolation, COVID, and growing up, developed chaotic metroidvanias, road-trip horror, and any number of simulations and worlds to explore, each to create the kind of novel, one-of-a-kind adventures which games can enable. I want to keep pushing how mechanics and level design can drive exploration and narrative experiences.</p>
+          <h3>Disciplines:</h3>
+          <ul class="skills-list">
+            <li>Game Design</li>
+            <li>Mechanical Design</li>
+            <li>Systems Design</li>
+            <li>Technical Design</li>
+            <li>Level Design</li>
+            <li>Gameplay Programming</li>
+            <li>Indie Publishing</li>
+          </ul>
+          <h3>Languages:</h3>
+          <ul class="skills-list">
+            <li>C#</li>
+            <li>Java</li>
+            <li>GameMaker Language</li>
+          </ul>
+          <h3>Engines:</h3>
+          <ul class="skills-list">
+            <li>Unity</li>
+            <li>GameMaker</li>
+          </ul>
+          <h3>Tools:</h3>
+          <ul class="skills-list">
+            <li>Git/GitHub</li>
+            <li>Miro</li>
+            <li>Figma</li>
+            <li>Trello</li>
+          </ul>
         </div>
       </div>
     </section>
