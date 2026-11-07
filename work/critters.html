@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Critters and You | Silas Heaphy</title>
+<meta name="description" content="A fully-simulated, finely-balanced ecosystem, at risk of collapse for the profit of a single survivalist.">
+<meta name="theme-color" content="#0b0f0e">
+<link rel="canonical" href="https://silasheaphy.dev/work/critters.html">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="../media/site/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Silas Heaphy">
+<meta property="og:title" content="Critters and You | Silas Heaphy">
+<meta property="og:description" content="A fully-simulated, finely-balanced ecosystem, at risk of collapse for the profit of a single survivalist.">
+<meta property="og:url" content="https://silasheaphy.dev/work/critters.html">
+<meta property="og:image" content="https://silasheaphy.dev/media/critters/still.webp">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="../assets/fonts/funnel-display-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/funnel-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/site.css">
+</head>
+<body style="--project: #6cc46a">
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="wordmark" href="../index.html"><span class="cell" aria-hidden="true"></span>Silas Heaphy</a>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a class="link" href="../index.html#work" aria-current="page">Work</a></li>
+        <li><a class="link" href="../about.html">About</a></li>
+        <li><a class="link" href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<main id="main">
+  <section class="case-hero dim">
+    <img class="bg" src="../media/critters/still.webp" alt="" fetchpriority="high">
+    <div class="wrap">
+      <a class="crumb" href="../index.html#work">All work</a>
+      <h1><img src="../media/critters/logo.webp" alt="Critters and You" width="738" height="96"></h1>
+    </div>
+  </section>
+  <div class="wrap case">
+    <article class="prose">
+<p>Critters and You is a survival game built off a highly systemic and highly balanced ecosystem simulation. Players must navigate survival and extractive profit off a fully dynamic and highly balanced food chain. Hunting and selling creatures is necessary for profit, but go too far and the ecosystem itself to collapse, leaving the entrepreneur to starve.</p>
+<p>This game called for fine-tuning of systems. It brought the unique challenge of creating a system tuned to stay balanced in perpetuity on its own, but to be subject enough to instability that player actions could create a runaway impact. Design was built around pulling players in two opposite directions, one of moderation to ensure stability and the other of maximizing profit score. This created a unique player conflict which explores the challenges and complexities of real-world environmentalism.</p>
+<figure class="wide">
+    <div class="viewport" data-critters data-speed="4" data-warmup="1800">
+      <div class="vp-bar">
+        <div class="vp-title"><span class="vp-dot" aria-hidden="true"></span><strong>Critters and You, live</strong><span class="num" data-clock>0:00</span></div>
+        <div class="vp-controls">
+          <button class="vp-btn" type="button" data-act="pause" aria-pressed="false">Pause</button>
+          <button class="vp-btn optional" type="button" data-act="speed" data-gs="4" aria-pressed="true">Normal</button>
+          <button class="vp-btn optional" type="button" data-act="speed" data-gs="2" aria-pressed="false">Fast</button>
+          <button class="vp-btn" type="button" data-act="reset">Restart</button>
+        </div>
+      </div>
+      <div class="vp-stage">
+        <img src="../media/critters/still.webp" alt="A frame of the Critters and You ecosystem: one colored square per animal on a field of grass." width="1280" height="720">
+        <div class="vp-toast" role="status" aria-live="polite"></div>
+      </div>
+      <div class="vp-inspector">
+        <ul class="vp-legend" aria-label="Population">
+          <li data-sp="0"><span class="sw" style="background:#ffffff"></span>Rabbits<span class="count">50</span></li>
+          <li data-sp="4"><span class="sw" style="background:#00ffff"></span>Mice<span class="count">40</span></li>
+          <li data-sp="2"><span class="sw" style="background:#ff00ff"></span>Elk<span class="count">7</span></li>
+          <li data-sp="1"><span class="sw" style="background:#ff8228"></span>Coyotes<span class="count">4</span></li>
+          <li data-sp="5"><span class="sw" style="background:#0000ff"></span>Ferrets<span class="count">4</span></li>
+          <li data-sp="3"><span class="sw" style="background:#ff0000"></span>Wolves<span class="count">1</span></li>
+        </ul>
+        <div class="vp-graph-wrap">
+          <canvas class="vp-graph" aria-hidden="true"></canvas>
+          <div class="vp-meta"><span>Populations over time</span><span>Spear: <span class="num" data-hunt>0 kills, $0</span></span></div>
+        </div>
+      </div>
+    </div>
+    <p class="vp-caption">Critters and You’s ecosystem, running live from a JavaScript port of the game’s GameMaker code. Hold the mouse button on the map to spear critters.</p>
+</figure>
+
+<h2>Seven species, one food chain</h2>
+<p>Grass grows and spreads across the map. Rabbits, mice and elk graze it. Coyotes hunt rabbits and mice, ferrets hunt mice, and wolves hunt elk, rabbits and coyotes. Each species has its own feeding rate, starvation threshold and breeding threshold, and every animal rolls slightly different values when it's born.</p>
+<figure class="foodweb"><svg viewBox="0 0 640 300" role="img" aria-labelledby="fw-t">
+  <title id="fw-t">Food web: grass feeds elk, rabbits and mice. Rabbits feed coyotes and wolves. Elk feed wolves. Mice feed coyotes and ferrets. Coyotes feed wolves.</title>
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="context-stroke"/></marker>
+  </defs>
+  <g stroke-width="2" fill="none" marker-end="url(#ah)">
+    <line x1="300" y1="262" x2="138" y2="208" stroke="#ff00ff"/>
+    <line x1="318" y1="252" x2="318" y2="188" stroke="#ffffff"/>
+    <line x1="338" y1="262" x2="476" y2="208" stroke="#00ffff"/>
+    <line x1="130" y1="170" x2="250" y2="54" stroke="#ff0000"/>
+    <line x1="310" y1="150" x2="278" y2="58" stroke="#ff0000"/>
+    <line x1="332" y1="150" x2="350" y2="112" stroke="#ff8228"/>
+    <line x1="468" y1="172" x2="392" y2="114" stroke="#ff8228"/>
+    <line x1="500" y1="170" x2="548" y2="84" stroke="#0000ff"/>
+    <line x1="350" y1="80" x2="294" y2="50" stroke="#ff0000"/>
+  </g>
+  <g font-family="Funnel Sans Variable, system-ui, sans-serif" font-size="17" font-weight="600" text-anchor="middle">
+    <text x="320" y="282" fill="#00ff00">Grass</text>
+    <text x="118" y="196" fill="#ff00ff">Elk</text>
+    <text x="320" y="176" fill="#ffffff">Rabbits</text>
+    <text x="490" y="196" fill="#00ffff">Mice</text>
+    <text x="372" y="102" fill="#ff8228">Coyotes</text>
+    <text x="566" y="70" fill="#6f7cff">Ferrets</text>
+    <text x="268" y="40" fill="#ff4d4d">Wolves</text>
+  </g>
+</svg></figure>
+<div class="species-wrap"><table class="species">
+  <thead><tr><th>Species</th><th class="n">Starts at</th><th>Eats</th><th class="n">Size</th><th class="n">Spear value</th></tr></thead>
+  <tbody>
+    <tr><td><span class="sw" style="background:#ffffff"></span>Rabbit</td><td class="n">50</td><td>Grass</td><td class="n">0.35</td><td class="n">$2</td></tr>
+    <tr><td><span class="sw" style="background:#00ffff"></span>Mouse</td><td class="n">40</td><td>Grass</td><td class="n">0.25</td><td class="n">$1</td></tr>
+    <tr><td><span class="sw" style="background:#ff00ff"></span>Elk</td><td class="n">7</td><td>Grass</td><td class="n">1.00</td><td class="n">$16</td></tr>
+    <tr><td><span class="sw" style="background:#ff8228"></span>Coyote</td><td class="n">4</td><td>Rabbits, mice</td><td class="n">0.60</td><td class="n">$6</td></tr>
+    <tr><td><span class="sw" style="background:#0000ff"></span>Ferret</td><td class="n">4</td><td>Mice</td><td class="n">0.40</td><td class="n">$3</td></tr>
+    <tr><td><span class="sw" style="background:#ff0000"></span>Wolf</td><td class="n">1</td><td>Elk, rabbits, coyotes</td><td class="n">0.85</td><td class="n">$12</td></tr>
+  </tbody>
+</table></div>
+
+<h2>Stable on its own, fragile in your hands</h2>
+<p>The hard part was tuning a system that stays balanced indefinitely without a player, but that a player can still knock over. A handful of rules do most of the work:</p>
+<ul>
+  <li><strong>Predators hunt by density.</strong> A coyote looks five cells out for rabbits. If rabbits drop below 60% of their starting count, that radius shrinks. If they boom past double, it becomes unlimited.</li>
+  <li><strong>Predators back off endangered prey.</strong> When a prey species falls below a quarter of its starting count, predators steer away from it instead of toward it.</li>
+  <li><strong>The last few predators hang on.</strong> The last two coyotes can't starve, the last two ferrets can't starve while mice survive, and the last wolf can't starve while rabbits or elk are still around.</li>
+  <li><strong>Wolves adapt.</strong> A wolf that can't find elk searches again for rabbits, and it stops eating coyotes once only two are left.</li>
+  <li><strong>Apex extinction is damped.</strong> If coyotes and wolves both die out, grass growth and grazer feeding rates are slowly retuned to soften the population explosion that follows.</li>
+</ul>
+<pre class="code"><code><span class="c">// simulate_creatures.gml: how far a predator looks for prey this turn</span>
+<span class="k">var</span> preyDistance = <span class="n">5</span> + ((speciesCount[<span class="n">0</span>][<span class="n">1</span>] &gt; baseCount[<span class="n">0</span>] * <span class="n">2</span>) * <span class="n">1000</span>)
+                   - ((speciesCount[<span class="n">0</span>][<span class="n">1</span>] &lt; baseCount[<span class="n">0</span>] * <span class="n">0.6</span>) * <span class="n">3</span>);
+
+<span class="k">if</span>(creaType == <span class="n">3</span>) { <span class="c">// Wolf</span>
+    preyDistance = <span class="n">15</span> + ((speciesCount[<span class="n">2</span>][<span class="n">1</span>] &gt; baseCount[<span class="n">2</span>] * <span class="n">2</span>) * <span class="n">1000</span>)
+                      - ((speciesCount[<span class="n">2</span>][<span class="n">1</span>] &lt; baseCount[<span class="n">2</span>] * <span class="n">0.6</span>) * <span class="n">10</span>);
+    chaseTargets = [<span class="n">2</span>];
+    foodTargets = [<span class="n">0</span>, <span class="n">1</span>, <span class="n">2</span>];
+    <span class="k">if</span>(speciesCount[<span class="n">1</span>][<span class="n">1</span>] &lt;= <span class="n">2</span>) { foodTargets = [<span class="n">0</span>, <span class="n">2</span>]; } <span class="c">// spare the last coyotes</span>
+}</code></pre>
+
+<h2>Three rounds of playtesting</h2>
+<p>I ran three waves of playtests in April 2026 and stayed hands-off during each one, so the game had to explain itself. The first two were with classmates in a focused feedback setting. The third was with casual players in a dining hall.</p>
+<ol class="waves">
+  <li><div class="w">Round 1<small>Classmates</small></div><div>
+    <h4>What I saw</h4>
+    <p>Nobody could read the game. Players spammed the spear, killed indiscriminately, forgot their hunger bar, and got eaten by coyotes they never saw coming. The one thing everyone liked was the graphs.</p>
+    <h4>What changed</h4>
+    <p>Halved the default speed and kept the old one as a Fast option. Darkened the grass so animals pop. Added a low-hunger warning, an extra life, a crosshair for spear aim, particle trails on wolves and coyotes, hard map borders to close an exploit, and a mini population graph in the corner.</p>
+  </div></li>
+  <li><div class="w">Round 2<small>Classmates</small></div><div>
+    <h4>What I saw</h4>
+    <p>Readability was fixed. The tester rated their understanding of the ecosystem 9 out of 10 and played deliberately, watching the graphs. But the game now felt &ldquo;a little too solvable too quickly.&rdquo; The best strategy was to hunt very little and wait, which is dull, and testers kept asking what the point was.</p>
+    <h4>What changed</h4>
+    <p>Added a six-minute timer and a clear goal, make as much money as you can, so restraint now competes with profit. Added feeders and traps you buy and place for a specific species, which makes the best strategy active instead of passive.</p>
+  </div></li>
+  <li><div class="w">Round 3<small>Casual players</small></div><div>
+    <h4>What I saw</h4>
+    <p>Strategic depth was up and the learning curve held. One player's favorite part was &ldquo;simple UI but complicated strategy.&rdquo; The weak spot was labeling: one player seemed to think the elk were predators.</p>
+    <h4>What changed</h4>
+    <p>Added a toggleable food chain chart, clearer labels for feeders and traps, key prompts, a multi-screen tutorial, a title screen that shows the ecosystem running on its own, sound effects, and a long list of rules for edge cases when species go extinct.</p>
+  </div></li>
+</ol>
+
+<h2>Choices I'd revisit</h2>
+<p>The animals are colored squares and their death sounds are abstract chiptune, on purpose. Squares read better than sprites on a crowded screen, and real animal sounds made killing them for profit genuinely unsettling. How realistic a game like this can get before players stop being comfortable is a question I'd like to test properly.</p>
+<p>With more time I'd run longer playtests, add end-of-run commentary that tells the story of how your ecosystem fared, and build a bigger map with terrain. That last one needs more performance than GameMaker's HTML5 export gives, plus a way to simulate off-screen animals cheaply.</p>
+
+    </article>
+    <aside aria-label="Project details">
+      <div class="spec">
+      <dl>
+        <div><dt>Role</dt><dd>Solo: design, programming, playtesting</dd></div>
+        <div><dt>Engine</dt><dd>GameMaker</dd></div>
+        <div><dt>Built</dt><dd>Spring 2026, final project for Art of the Game (ART 0907) at Yale</dd></div>
+        <div><dt>Playtests</dt><dd>Three rounds, April 2026</dd></div>
+        <div><dt>Simulation</dt><dd>Seven species on a 128 &times; 72 grid, up to 1,500 animals</dd></div>
+      </dl>
+      <div class="links">
+        <a class="btn primary" href="https://yaleschoolofart.org/artofgame2026/students/Silas/critters.html" target="_blank" rel="noopener"><span>Play Critters and You</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8h-1.6V5.7l-7.3 7.4-1.2-1.2 7.4-7.3H5z" fill="currentColor"/></svg></a>
+        <a class="btn" href="https://docs.google.com/document/d/1-CkGf4vHsoWmlFZjPhMP-9rFeWjK6s2B44C4Kmb2IJQ/edit?usp=sharing" target="_blank" rel="noopener"><span>Playtest Write-up</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8h-1.6V5.7l-7.3 7.4-1.2-1.2 7.4-7.3H5z" fill="currentColor"/></svg></a>
+        <a class="btn" href="https://miro.com/app/board/uXjVGms0Lnk=/?share_link_id=906650831798" target="_blank" rel="noopener"><span>Miro Board</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8h-1.6V5.7l-7.3 7.4-1.2-1.2 7.4-7.3H5z" fill="currentColor"/></svg></a>
+        <a class="btn" href="https://github.com/silasstokes-blip/Critters" target="_blank" rel="noopener"><span>GameMaker Project on GitHub</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8h-1.6V5.7l-7.3 7.4-1.2-1.2 7.4-7.3H5z" fill="currentColor"/></svg></a>
+        <a class="btn" href="https://yaleschoolofart.org/artofgame2026/students/Silas/crittersDraft.html" target="_blank" rel="noopener"><span>Critters Draft</span><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3h8v8h-1.6V5.7l-7.3 7.4-1.2-1.2 7.4-7.3H5z" fill="currentColor"/></svg></a>
+      </div>
+      </div>
+    </aside>
+  </div>
+  <nav class="pager" aria-label="More projects">
+    <a href="nitrojet.html"><span>Previous</span><strong>Nitrojet</strong></a>
+    <a href="safe-travels.html"><span>Next</span><strong>Safe Travels</strong></a>
+  </nav>
+</main>
+<footer class="footer" id="contact">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <h2>Get in Touch</h2>
+        <p class="sub">Open to internship opportunities, collaboration, and conversation.</p>
+        <div class="email">
+          <a class="addr" href="mailto:silas.heaphy@yale.edu">silas.heaphy@yale.edu</a>
+          <button class="btn" type="button" data-copy="silas.heaphy@yale.edu">Copy address</button>
+        </div>
+      </div>
+      <ul class="socials">
+        <li><a href="https://github.com/silasstokes-blip" target="_blank" rel="noopener">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/silas-heaphy-a3a385259/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://ice-fruit-games.itch.io/" target="_blank" rel="noopener">itch.io</a></li>
+        <li><a href="https://store.steampowered.com/app/1563210/Nitrojet/" target="_blank" rel="noopener">Steam</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Silas Heaphy</span>
+    </div>
+  </div>
+</footer>
+<script src="../assets/js/site.js" defer></script>
+<script src="../assets/js/critters-sim.js" defer></script>
+<script src="../assets/js/critters-view.js" defer></script>
+</body>
+</html>
