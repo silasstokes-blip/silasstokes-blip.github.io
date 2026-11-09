@@ -31,7 +31,6 @@
     var still = stage.querySelector('img');
     var canvas = document.createElement('canvas');
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', 'Live simulation of grass, rabbits, mice, elk, ferrets, coyotes and wolves on a 128 by 72 grid. Hold the mouse button to spear critters.');
     var ctx = canvas.getContext('2d');
     var grassCanvas = document.createElement('canvas');
     var gctx, grassImg;
@@ -47,12 +46,16 @@
 
     var particles = [];
     var sim = new Sim({
+      preset: root.getAttribute('data-preset') || 'game',
       gameSpeed: parseInt(root.getAttribute('data-speed') || '2', 10),
       onEvent: function (type, x, y, sp) {
         var n = type === 'spear' ? 26 : type === 'eaten' ? 16 : 9;
         burst(x + 0.5, y + 0.5, sp, n, type === 'starved' ? 0.6 : 1);
       }
     });
+    canvas.setAttribute('aria-label', 'Live simulation of grass, rabbits, mice, elk, ferrets, coyotes and wolves on a ' +
+      sim.gridWidth + ' by ' + sim.gridHeight + ' grid. Hold the mouse button to spear critters.');
+    var reach = sim.preset.spearReach;
     var pendingSpeed = null;
     var running = false, visible = true, userPaused = false, started = false;
     var acc = 0, last = 0, raf = 0;
@@ -141,11 +144,12 @@
         var k = strikeFx.t / strikeFx.max;
         ctx.strokeStyle = 'rgba(255,255,255,' + (0.85 * k) + ')';
         ctx.lineWidth = Math.max(1, cs * 0.12);
-        var x0 = (strikeFx.x - 2) * cs, y0 = (strikeFx.y - 2) * cs;
-        ctx.strokeRect(x0, y0, cs * 5, cs * 5);
+        var side = reach * 2 + 1;
+        var x0 = (strikeFx.x - reach) * cs, y0 = (strikeFx.y - reach) * cs;
+        ctx.strokeRect(x0, y0, cs * side, cs * side);
         ctx.beginPath();
-        ctx.moveTo((strikeFx.x + 0.5) * cs, y0 - cs); ctx.lineTo((strikeFx.x + 0.5) * cs, y0 + cs * 6);
-        ctx.moveTo(x0 - cs, (strikeFx.y + 0.5) * cs); ctx.lineTo(x0 + cs * 6, (strikeFx.y + 0.5) * cs);
+        ctx.moveTo((strikeFx.x + 0.5) * cs, y0 - cs); ctx.lineTo((strikeFx.x + 0.5) * cs, y0 + cs * (side + 1));
+        ctx.moveTo(x0 - cs, (strikeFx.y + 0.5) * cs); ctx.lineTo(x0 + cs * (side + 1), (strikeFx.y + 0.5) * cs);
         ctx.stroke();
       }
     }

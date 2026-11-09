@@ -11,6 +11,10 @@
   avatar, hunger, shop and house, which is how the game's own title screen
   runs the ecosystem. A "spear" strike can be triggered at any cell.
 
+  Sim.PRESETS.game is the game's own map and numbers. Sim.PRESETS.web is a
+  smaller map for the website, with the size-dependent numbers (starting
+  counts, population cap, hunting ranges, spear reach) scaled to fit.
+
   No DOM access here, so it runs in the browser or in Node.
 */
 (function (root) {
@@ -36,10 +40,32 @@
   function myMod(a, b) { if (a >= 0) return a % b; while (a < 0) a += b; return a; }
   function inRange(v, lo, hi) { return v >= lo && v <= hi; } // clamp(v,lo,hi) == v
 
+  // Smaller map for the website: a quarter of the game's area (64 x 36 cells). Starting
+  // counts are set so each species starts at a similar density to the game. On a map this
+  // small one predator covers far more of the ground, so predators hunt on only part of
+  // their turns, the prey refuge (search distance when prey is scarce) is wider, and grass
+  // regrows faster. Values were chosen by running both maps unattended for 10 minutes at
+  // game speeds 2 and 4 and picking the closest match in populations and extinction rates.
+  var WEB_PRESET = {
+    gridWidth: 64, gridHeight: 36,
+    baseCount: [25, 2, 4, 1, 20, 2],
+    maxCreatures: 375,
+    preyRange: [3.5, 10.6, 7.1],
+    preyRangeDrop: [3, 7.1, 6.5],
+    spearReach: 1,
+    rabbitBoom: 500,
+    grassSpread: 0.002,
+    grassGrowth: 0.3,
+    starveFloor: [1, 1, 1],
+    huntChance: [0.25, 0.25, 0.3]
+  };
+
   function Sim(opts) {
     opts = opts || {};
-    this.gridWidth = opts.gridWidth || 128;   // room_width / cellSize  (1024 / 8)
-    this.gridHeight = opts.gridHeight || 72;  // room_height / cellSize (576 / 8)
+    var preset = Sim.PRESETS[opts.preset || 'game'] || Sim.PRESETS.game;
+    this.preset = preset;
+    this.gridWidth = preset.gridWidth;
+    this.gridHeight = preset.gridHeight;
     this.gameSpeed = opts.gameSpeed || 2;     // title screen and "Fast" = 2, "Normal" = 4
     this.recordedSteps = opts.recordedSteps || 3000;
     this.onEvent = opts.onEvent || null;      // (type, x, y, speciesId) for particles
@@ -48,6 +74,26 @@
 
   Sim.SPECIES = SPECIES;
   Sim.SIZE = [0.35, 0.6, 1, 0.85, 0.25, 0.4];
+
+  // Species order: rabbit, coyote, elk, wolf, mouse, ferret
+  Sim.PRESETS = {
+    // Critters and You as shipped: 1024 x 576 room, 8px cells
+    game: {
+      gridWidth: 128, gridHeight: 72,
+      baseCount: [50, 4, 7, 1, 40, 4],
+      maxCreatures: 1500,
+      preyRange: [5, 15, 10],      // coyote, wolf, ferret search distance in cells
+      preyRangeDrop: [3, 10, 7],   // how much that distance shrinks when prey is scarce
+      spearReach: 2,               // cells either side of the spear tip
+      rabbitBoom: 2000,
+      grassSpread: 0.001,
+      grassGrowth: 0.15,
+      starveFloor: [2, 1, 2],      // coyotes, wolves, ferrets at or below this count can't starve
+      huntChance: [1, 1, 1]        // share of turns a coyote, wolf, ferret spends hunting
+    },
+    // Smaller map for the website (a quarter of the area)
+    web: WEB_PRESET
+  };
 
   Sim.prototype.reset = function () {
     var gw = this.gridWidth, gh = this.gridHeight, f, e, s;
@@ -60,14 +106,14 @@
     this.houseX1 = -10000; this.houseY1 = -10000;
     this.houseX2 = this.houseX1 + 10; this.houseY2 = this.houseY1 + 10;
 
-    this.grassSpreadChance = 0.001;
-    this.grassGrowthChance = 0.15;
+    this.grassSpreadChance = this.preset.grassSpread;
+    this.grassGrowthChance = this.preset.grassGrowth;
     this.numbOfSpecies = 6;
     this.creaFeed = [1.8, 70, 2, 25, 1.95, 80];
     this.creaChild = [160 * 1.5, 240 * 1.2, 400, 350 * 1.5, 150, 90 * 1.2];
     this.creaStarve = [-400, -200, -20, -250, -10, -300];
     this.reproductiveAge = 5;
-    this.baseCount = [50, 4, 7, 1, 40, 4];
+    this.baseCount = this.preset.baseCount.slice();
     this.creaSize = Sim.SIZE.slice();
 
     this.spearX = -100; this.spearY = -100; this.spearTime = -1;
@@ -133,7 +179,8 @@
 
   Sim.prototype.spearHits = function (x, y) {
     var sx = Math.floor(this.spearX), sy = Math.floor(this.spearY);
-    return inRange(x, sx - 2, sx + 2) && inRange(y, sy - 2, sy + 2);
+    var r = this.preset.spearReach;
+    return inRange(x, sx - r, sx + r) && inRange(y, sy - r, sy + r);
   };
 
   Sim.prototype.spearKill = function (c, x, y) {
@@ -169,6 +216,7 @@
   Sim.prototype.simulate_creatures = function (turnType) {
     var crea = this.crea, sc = this.speciesCount, base = this.baseCount;
     var gw = this.gridWidth, gh = this.gridHeight, gs = this.gameSpeed, grid = this.grid;
+    var floor = this.preset.starveFloor;
     var f, e;
     for (f = 0; f < crea.length; f++) {
       var myCrea = crea[f];
@@ -188,23 +236,30 @@
             }
           }
 
-          // Predators: coyotes, wolves, ferrets
-          if (creaType === 1 || creaType === 3 || creaType === 5) {
+          // Predators: coyotes, wolves, ferrets. On the smaller web map they hunt on only
+          // some turns, so prey sees the same predation pressure as on the full map.
+          var hunting = creaType === 1 || creaType === 3 || creaType === 5;
+          if (hunting) {
+            var hc = this.preset.huntChance[creaType === 1 ? 0 : creaType === 3 ? 1 : 2];
+            hunting = hc >= 1 || Math.random() < hc;
+          }
+          if (hunting) {
             var nearestPrey = -1;
             var antiprey = false;
             // Search radius shrinks when prey is scarce and becomes unlimited when prey booms
-            var preyDistance = 5 + ((sc[0][1] > base[0] * 2) * 1000) - ((sc[0][1] < base[0] * 0.6) * 3);
+            var pr = this.preset.preyRange, pd = this.preset.preyRangeDrop;
+            var preyDistance = pr[0] + ((sc[0][1] > base[0] * 2) * 1000) - ((sc[0][1] < base[0] * 0.6) * pd[0]);
             var chaseTargets = [0];
             var foodTargets = [0, 4];
 
             if (creaType === 3) { // Wolf
-              preyDistance = 15 + ((sc[2][1] > base[2] * 2) * 1000) - ((sc[2][1] < base[2] * 0.6) * 10);
+              preyDistance = pr[1] + ((sc[2][1] > base[2] * 2) * 1000) - ((sc[2][1] < base[2] * 0.6) * pd[1]);
               chaseTargets = [2];
               foodTargets = [0, 1, 2];
-              if (sc[1][1] <= 2) foodTargets = [0, 2];
+              if (sc[1][1] <= this.preset.starveFloor[0]) foodTargets = [0, 2];
             }
             if (creaType === 5) { // Ferret
-              preyDistance = 10 + ((sc[4][1] > base[4] * 2) * 1000) - ((sc[4][1] < base[4] * 0.6) * 7);
+              preyDistance = pr[2] + ((sc[4][1] > base[4] * 2) * 1000) - ((sc[4][1] < base[4] * 0.6) * pd[2]);
               chaseTargets = [4];
               foodTargets = [4];
               antiprey = false;
@@ -261,7 +316,7 @@
           if (irandom_range(1, 10) === 1) myCrea.myDir = myMod(myCrea.myDir + choose(1, -1), 4);
 
           // Well fed and mature: have a child
-          if (myCrea.myHunger >= myCrea.childThreshold && myCrea.age > this.reproductiveAge && crea.length < 1500) {
+          if (myCrea.myHunger >= myCrea.childThreshold && myCrea.age > this.reproductiveAge && crea.length < this.preset.maxCreatures) {
             myCrea.myHunger = -2;
             myCrea.age = 0;
             var child = this.create_creature(creaType, creaX, creaY);
@@ -298,9 +353,9 @@
 
         // Starvation, with guards that keep the last few predators alive
         if (!myCrea.eaten && myCrea.myHunger < myCrea.deathThreshold &&
-            (creaType !== 3 || sc[creaType][0] > 1 || (sc[0][1] === 0 && sc[2][1] === 0)) &&
-            (creaType !== 1 || sc[creaType][0] > 2) &&
-            (creaType !== 5 || sc[creaType][0] > 2 || sc[4][1] === 0)) {
+            (creaType !== 3 || sc[creaType][0] > floor[1] || (sc[0][1] === 0 && sc[2][1] === 0)) &&
+            (creaType !== 1 || sc[creaType][0] > floor[0]) &&
+            (creaType !== 5 || sc[creaType][0] > floor[2] || sc[4][1] === 0)) {
           myCrea.eaten = true;
           this.emit('starved', creaX, creaY, creaType);
         }
@@ -346,7 +401,7 @@
 
     // When coyotes and wolves are both gone, the original nudges the grazers down
     if (sc[1][5] === 0 && sc[3][5] === 0 && this.gameTime > 60) {
-      if (sc[0][5] > 2000) this.grassSpreadChance *= 0.999;
+      if (sc[0][5] > this.preset.rabbitBoom) this.grassSpreadChance *= 0.999;
       this.grassGrowthChance *= 0.9995;
       this.creaFeed[0] *= 1.0002;
       this.creaFeed[2] *= 0.9995;

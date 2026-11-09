@@ -41,4 +41,21 @@ ffmpeg -i loop.mp4 -c:v libvpx-vp9 -b:v 0 -crf 40 -row-mt 1 -an loop.webm
 
 ## The Critters simulation
 
-`critters-sim.js` follows `simulate_creatures`, `simulate_grass_growth`, `create_creature` and the `obj_game` step event from the Critters repo, with the same constants and update order. The player, hunger, shop and house are left out, the way the game's title screen runs it. Every creature is drawn as one grid cell. Holding the mouse button keeps the spear out at the pointer; it kills anything within two cells.
+`critters-sim.js` follows `simulate_creatures`, `simulate_grass_growth`, `create_creature` and the `obj_game` step event from the Critters repo, with the same constants and update order. The player, hunger, shop and house are left out, the way the game's title screen runs it. Every creature is drawn as one grid cell. Holding the mouse button keeps the spear out at the pointer.
+
+The sim takes a preset (`new Sim({ preset })`, set on the page with `data-preset` on `.viewport`):
+
+- `game`: the shipped game. 128 x 72 cells, starting counts 50 rabbits, 4 coyotes, 7 elk, 1 wolf, 40 mice, 4 ferrets, spear reach two cells.
+- `web` (used on the site): a quarter of the area, 64 x 36 cells. Starting counts 25, 2, 4, 1, 20, 2. Predators hunt on 25 to 30 percent of their turns, prey search distances are scaled down with a wider refuge when prey is scarce, grass grows and spreads twice as fast, the creature cap and rabbit boom limit are quartered, and the spear reaches one cell.
+
+The `web` values came from running both presets unattended for 10 minutes at game speeds 2 and 4 and picking the setting whose populations and extinction rates came closest to the `game` preset. The small map is less stable than the full one. Share of 24 unattended 10-minute runs in which a species died out:
+
+| Species | Full map, speed 2 | Small map, speed 2 | Full map, speed 4 | Small map, speed 4 |
+|---|---|---|---|---|
+| Rabbits | 0% | 29% | 0% | 12% |
+| Elk | 8% | 50% | 4% | 29% |
+| Mice | 50% | 92% | 21% | 50% |
+| Ferrets | 50% | 92% | 17% | 50% |
+| Coyotes, wolves | 0% | 4% | 0% | 0 to 4% |
+
+The home page runs at speed 2 and the Critters page at speed 4. The scratch tools used for the measurements are not part of the site.

@@ -7,6 +7,31 @@
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var framed = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
 
+  /* Open each page at the top. Some viewers carry the previous page's scroll position over,
+     either inside this page or in the frame that holds it. Links to a section (#work, #contact)
+     and back/forward navigation keep their position. */
+  (function startAtTop() {
+    var entry = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || {};
+    if (location.hash || entry.type === 'back_forward' || entry.type === 'reload') return;
+    var touched = false, frameDone = !framed;
+    ['wheel', 'touchstart', 'keydown', 'pointerdown'].forEach(function (ev) {
+      window.addEventListener(ev, function () { touched = true; }, { once: true, passive: true });
+    });
+    var toTop = function () {
+      if (touched) return;
+      if (window.scrollY > 0) window.scrollTo(0, 0);
+      if (!frameDone) {
+        // In a viewer that sizes its frame to the page, the scrolling happens outside this
+        // document; bringing the page's first element into view scrolls that container too.
+        frameDone = true;
+        var first = document.querySelector('header') || document.body;
+        try { if (first) first.scrollIntoView({ block: 'start', inline: 'nearest' }); } catch (e) { /* old browsers */ }
+      }
+    };
+    toTop();
+    window.addEventListener('load', function () { toTop(); [50, 250, 700].forEach(function (ms) { setTimeout(toTop, ms); }); });
+  })();
+
   /* Hover previews on work tiles: load the micro-trailer only when someone points at it */
   if (canHover && !reduceMotion) {
     $$('.tile-media[data-video]').forEach(function (box) {
